@@ -1,7 +1,11 @@
-<h1>Welcome to the homepage!</h1>
-{% if session.get('username') %}
-    <p>Hello, {{ session['username'] }}!</p>
-    <a href="{{ url_for('login') }}">Logout</a>
-{% else %}
-    <p>You are not logged in. <a href="{{ url_for('login') }}">Login</a></p>
-{% endif %}
+{% extends 'base.html' %} 
+{% block content %}
+    <h1>
+        EmotiGame Landing Page
+    </h1>
+    {% if session.get('username') %}
+        <p> Welcome, {{ session.get('username') }}.</p>
+    {% else %}
+        <p>Please log in.</p>
+    {% endif %}
+{% endblock %}
