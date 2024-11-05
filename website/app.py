@@ -6,6 +6,10 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
 if __name__ == "__main__":
     # change debug to false to hide error from displaying on website, set to true for testing purposes
     app.run(debug=True)
