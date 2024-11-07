@@ -1,9 +1,9 @@
-##Running the website:##
+## Running the website:
 
-###Step 1:### 
+### Step 1: 
 Ensure python 3 is installed.
 
-###Step 2:###
+### Step 2:
 Create a virtual environment for the website. In a terminal window, navigate to the project directory and run one of the following commands:
 
 Windows:
@@ -16,7 +16,7 @@ macOS and Linux:
 python3 -m venv <environment name>
 ```
 
-###Step 3:###
+### Step 3:
 Active the virtual environment using one of the following commands in the terminal at the project directory:
 
 Windows:
@@ -35,7 +35,7 @@ deactivate
 ``` 
 into the the terminal.
 
-###Step4:###
+### Step4:
 Within the project directory type the following commands to run the application.
 ```bash
 cd website
