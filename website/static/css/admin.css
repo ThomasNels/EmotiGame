@@ -1,0 +1,28 @@
+button {
+    background-color: silver;
+    font-size: medium;
+    padding: 5px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.documents {
+    width: 80%;
+}
+
+th {
+    padding: 10px;
+    text-align: left;
+}
+
+.input {
+    width: 10px;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: silver;
+}
+
+tbody tr:nth-child(even) {
+    background-color: white;
+}

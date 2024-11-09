@@ -1,0 +1,23 @@
+.navbar {
+    margin: 4px;
+    padding: 9px;
+    background-color: navy;
+    list-style-type: none;
+    overflow: hidden;
+    position: sticky;
+}
+.navbar a {
+    color: silver;
+    padding: 7px;
+    font-size: large;
+    text-decoration: none;
+    /* border-right: 2px solid white; */
+}
+.navbar a:hover {
+    border: 2px solid white;
+}
+
+.navbar a.active {
+    font: bold;
+    border: 2px solid silver;
+}
