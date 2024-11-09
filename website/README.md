@@ -36,6 +36,12 @@ deactivate
 into the the terminal.
 
 ### Step4:
+Run the following command to install the required packages.
+```bash
+pip intall -r requirements.txt
+```
+
+### Step5:
 Within the project directory type the following commands to run the application.
 ```bash
 cd website
