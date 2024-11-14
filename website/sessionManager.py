@@ -30,22 +30,35 @@ class sessionManager(View):
             return stored_password == self.password  # Add hashing logic if needed (e.g., bcrypt)
         return False
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> fe0b293b0a75f80491824eabc8ff3fd92d0740ca
     #log in function
     def login(self):
         if self.auth():
             session['username'] = self.userName
             return redirect(url_for('index'))
         else:
+<<<<<<< HEAD
             error_message = "Username or password is inncorect. Please try again."
+=======
+            error_message = "Username or password is incorrect. Please try again."
+>>>>>>> fe0b293b0a75f80491824eabc8ff3fd92d0740ca
             return render_template('login.html', error_message=error_message)
 
     #log out function
     def logout(self):
+<<<<<<< HEAD
+=======
+        #TODO: Have check to ensure user wants to logout
+>>>>>>> fe0b293b0a75f80491824eabc8ff3fd92d0740ca
         session.pop('username', None)
         return redirect(url_for('index'))
 
     #dispatch request funtion to get the username and password
     def dispatch_request(self):
+<<<<<<< HEAD
         try:
             if self.action == 'login':
                 if request.method == 'POST':
@@ -63,3 +76,16 @@ class sessionManager(View):
         except Exception as e:
             # Handle the exception and return an error response
             return f"An error occurred: {e}", 400
+=======
+        if self.action == 'login':
+            if request.method == 'POST':
+                self.userName = request.form.get('username')
+                self.password = request.form.get('password')
+                return self.login()
+            return render_template('login.html')
+        
+        if self.action == 'logout':
+            return self.logout()
+
+
+>>>>>>> fe0b293b0a75f80491824eabc8ff3fd92d0740ca
