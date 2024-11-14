@@ -3,6 +3,7 @@
 #Libraries
 from flask import request, redirect, url_for, session, render_template
 from flask.views import View
+from db_connection import DatabaseConnection
 
 #class definition
 class sessionManager(View):
@@ -11,17 +12,24 @@ class sessionManager(View):
         self.userName = None
         self.password = None
         self.action = action
+        self.db_connection = DatabaseConnection('db_name', 'db_user', 'db_password')
+
+    def __del__(self):
+        self.db_connection.close()
 
     #authentication function
     def auth(self):
-        #TODO: check login information with the database.
-        #TODO: save admin staus into a variable for ease of use.
+        #check log in infor with the database
+        query = """
+        SELECT password FROM User_Information WHERE username = %s;
+        """
 
-        #temperary user
-        users = {
-            'test': '1234' #username:password
-        }
-        return users.get(self.userName) == self.password
+        result = self.db_connection.fetch_one(query, (self.userName,))
+        if result:
+            stored_password = result[0]
+            return stored_password == self.password  # Add hashing logic if needed (e.g., bcrypt)
+        return False
+
 
     #log in function
     def login(self):
@@ -31,13 +39,13 @@ class sessionManager(View):
         else:
             error_message = "Username or password is incorrect. Please try again."
             return render_template('login.html', error_message=error_message)
-        
+
     #log out function
     def logout(self):
         #TODO: Have check to ensure user wants to logout
         session.pop('username', None)
         return redirect(url_for('index'))
-    
+
     #dispatch request funtion to get the username and password
     def dispatch_request(self):
         if self.action == 'login':

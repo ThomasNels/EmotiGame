@@ -2,9 +2,12 @@ from flask import Flask, render_template
 from flask.views import MethodView
 from sessionManager import sessionManager
 import secrets
+from db_connection import create_tables
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
+
+create_tables()
 
 @app.route('/')
 def index():
