@@ -30,17 +30,19 @@ class sessionManager(View):
             return stored_password == self.password  # Add hashing logic if needed (e.g., bcrypt)
         return False
 
+
     #log in function
     def login(self):
         if self.auth():
             session['username'] = self.userName
             return redirect(url_for('index'))
         else:
-            error_message = "Username or password is inncorect. Please try again."
+            error_message = "Username or password is incorrect. Please try again."
             return render_template('login.html', error_message=error_message)
 
     #log out function
     def logout(self):
+        #TODO: Have check to ensure user wants to logout
         session.pop('username', None)
         return redirect(url_for('index'))
 
@@ -52,6 +54,7 @@ class sessionManager(View):
                 self.password = request.form.get('password')
                 return self.login()
             return render_template('login.html')
+        
         if self.action == 'logout':
             return self.logout()
 
