@@ -4,6 +4,10 @@
 from flask import request, redirect, url_for, session, render_template
 from flask.views import View
 from db_connection import DatabaseConnection
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 #class definition
 class sessionManager(View):
@@ -13,7 +17,7 @@ class sessionManager(View):
         self.password = None
         self.user_id = None
         self.action = action
-        self.db_connection = DatabaseConnection('db_name', 'db_user', 'db_password')
+        self.db_connection = DatabaseConnection(os.getenv('DB_NAME'), os.getenv('DB_USER'), os.getenv('DB_PASSWORD'))
 
     def __del__(self):
         self.db_connection.close()

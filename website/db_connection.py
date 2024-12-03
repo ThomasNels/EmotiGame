@@ -1,23 +1,17 @@
-# db_connection.py
 import psycopg2
-
 import os
 from dotenv import load_dotenv
 
-def load_database_information():
-    load_dotenv()
-    db_name = os.getenv('DB_NAME')
-    db_user = os.getenv('DB_USER')
-    db_password = os.getenv('DB_PASSWORD')
-    return db_name, db_user, db_password
+# Load environment variables
+load_dotenv()
 
 class DatabaseConnection:
     def __init__(self, db_name, user, password, host='localhost', port='5432'):
-        db_name, db_user, db_password = load_database_information()
+        # Initialize database connection
         self.conn = psycopg2.connect(
             dbname=db_name,
-            user=db_user,
-            password=db_password,
+            user=user,
+            password=password,
             host=host,
             port=port
         )
@@ -37,8 +31,18 @@ class DatabaseConnection:
 
 # Create tables if they don't exist
 def create_tables():
-    db_name, db_user, db_password = load_database_information()
-    connection = DatabaseConnection('db_name', 'db_user', 'db_password')
+    # Load database credentials from environment
+    db_name = os.getenv('DB_NAME')
+    db_user = os.getenv('DB_USER')
+    db_password = os.getenv('DB_PASSWORD')
+
+    if not db_name or not db_user or not db_password:
+        raise ValueError("Database credentials are not properly set in the .env file")
+
+    # Connect to the database
+    connection = DatabaseConnection(db_name, db_user, db_password)
+
+    # SQL statements to create tables
     create_user_table = '''
     CREATE TABLE IF NOT EXISTS User_Information (
         user_id SERIAL PRIMARY KEY,
@@ -50,13 +54,19 @@ def create_tables():
     '''
 
     create_forms_table = '''
-    CREATE TABLE IF NOT EXISTS FORMS (
+    CREATE TABLE IF NOT EXISTS Forms (
         form_id SERIAL PRIMARY KEY,
         user_id INTEGER REFERENCES User_Information(user_id),
         forms TEXT
     );
     '''
 
+    # Execute table creation queries
     connection.execute_query(create_user_table)
     connection.execute_query(create_forms_table)
+
+    # Close the connection
     connection.close()
+
+if __name__ == "__main__":
+    create_tables()
