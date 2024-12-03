@@ -4,6 +4,10 @@
 from flask import request, redirect, url_for, session, render_template
 from flask.views import View
 from db_connection import DatabaseConnection
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 #class definition
 class sessionManager(View):
@@ -11,8 +15,9 @@ class sessionManager(View):
     def __init__(self, action):
         self.userName = None
         self.password = None
+        self.user_id = None
         self.action = action
-        self.db_connection = DatabaseConnection('db_name', 'db_user', 'db_password')
+        self.db_connection = DatabaseConnection(os.getenv('DB_NAME'), os.getenv('DB_USER'), os.getenv('DB_PASSWORD'))
 
     def __del__(self):
         self.db_connection.close()
@@ -21,12 +26,13 @@ class sessionManager(View):
     def auth(self):
         #check log in infor with the database
         query = """
-        SELECT password FROM User_Information WHERE username = %s;
+        SELECT user_id, password FROM User_Information WHERE username = %s;
         """
 
         result = self.db_connection.fetch_one(query, (self.userName,))
         if result:
-            stored_password = result[0]
+            stored_password = result[1]
+            self.user_id = result[0]
             return stored_password == self.password  # Add hashing logic if needed (e.g., bcrypt)
         return False
 
@@ -34,6 +40,7 @@ class sessionManager(View):
     def login(self):
         if self.auth():
             session['username'] = self.userName
+            session['user_id'] = self.user_id
             return redirect(url_for('index'))
         else:
             return render_template('login.html', error_message=error_message)
@@ -42,6 +49,7 @@ class sessionManager(View):
     def logout(self):
         #TODO: Have check to ensure user wants to logout
         session.pop('username', None)
+        session.pop('user_id', None)
         return redirect(url_for('index'))
 
     #dispatch request funtion to get the username and password

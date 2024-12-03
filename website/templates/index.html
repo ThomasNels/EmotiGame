@@ -1,5 +1,15 @@
 {% extends 'base.html' %} 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flashes">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
     <!-- TODO: improve presentation of page -->
     <h1>
         EmotiGame Landing Page
