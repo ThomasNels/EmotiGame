@@ -18,6 +18,7 @@ def index():
 app.add_url_rule('/login', view_func=sessionManager.as_view('login', action='login'), methods=['GET', 'POST'])
 app.add_url_rule('/logout', view_func=sessionManager.as_view('logout', action='logout'), methods=['GET'])
 app.add_url_rule('/admin', view_func=admin.as_view('admin'), methods=['GET', 'POST'])
+app.add_url_rule('/create', view_func=sessionManager.as_view('create', action='create'), methods=['GET', 'POST'])
 
 # NOTE: Temporary until figuring out best way for game analytics pages
 @app.route('/chess')
