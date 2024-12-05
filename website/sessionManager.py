@@ -36,6 +36,39 @@ class sessionManager(View):
             return stored_password == self.password  # Add hashing logic if needed (e.g., bcrypt)
         return False
 
+    def create(self):
+        if request.method == 'POST':
+            new_username = request.form.get("new_username")
+            new_email = request.form.get("new_email")
+            new_password = request.form.get("new_password")
+            confirm_password = request.form.get("confirm_password")
+
+            if not new_username or not new_email or not new_password or not confirm_password:
+                return render_template('create.html', create_user_message="All fields are required", create_user_success=False)
+
+            if new_password != confirm_password:
+                return render_template('create.html', create_user_message="Passwords do not match.", create_user_success=False)
+
+            check_query = """
+            SELECT user_id FROM User_Information WHERE username = %s OR email = %s;
+            """
+            existing_user = self.db_connection.fetch_one(check_query, (new_username, new_email))
+
+            if existing_user:
+                return render_template('create.html', create_user_message="Username or email already taken", create_user_success=False)
+
+            # TODO: add hashing logic to password input
+
+            insert_query = """
+            INSERT INTO User_Information (username, email, password) VALUES (%s, %s, %s);
+            """
+            self.db_connection.execute_query(insert_query, (new_username, new_email, new_password))
+            self.db_connection.close()
+
+            return render_template('create.html', create_user_message="User created successfully", create_user_success=True)
+
+        return render_template('create.html')
+
     #log in function
     def login(self):
         if self.auth():
@@ -43,7 +76,7 @@ class sessionManager(View):
             session['user_id'] = self.user_id
             return redirect(url_for('index'))
         else:
-            return render_template('login.html', error_message=error_message)
+            return render_template('login.html', error_message="Incorrect Username and/or password")
 
     #log out function
     def logout(self):
@@ -65,19 +98,12 @@ class sessionManager(View):
             if self.action == 'logout':
                 return self.logout()
 
+            if self.action == 'create':
+                return self.create()
+
             # If no if condition is met, raise an exception
             raise ValueError("Invalid action specified")
 
         except Exception as e:
             # Handle the exception and return an error response
             return f"An error occurred: {e}", 400
-        if self.action == 'login':
-            if request.method == 'POST':
-                self.userName = request.form.get('username')
-                self.password = request.form.get('password')
-                return self.login()
-            return render_template('login.html')
-        
-        if self.action == 'logout':
-            return self.logout()
-
