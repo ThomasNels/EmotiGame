@@ -76,11 +76,7 @@ class sessionManager(View):
             session['user_id'] = self.user_id
             return redirect(url_for('index'))
         else:
-<<<<<<< HEAD
-            return render_template('login.html', error_message="Incorrect username or password")
-=======
             return render_template('login.html', error_message="Incorrect Username and/or password")
->>>>>>> origin/main
 
     #log out function
     def logout(self):
