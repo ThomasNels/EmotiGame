@@ -43,7 +43,7 @@ class sessionManager(View):
             session['user_id'] = self.user_id
             return redirect(url_for('index'))
         else:
-            return render_template('login.html', error_message=error_message)
+            return render_template('login.html', error_message="Incorrect username or password")
 
     #log out function
     def logout(self):
@@ -65,19 +65,12 @@ class sessionManager(View):
             if self.action == 'logout':
                 return self.logout()
 
+            if self.action == 'create':
+                return self.create()
+
             # If no if condition is met, raise an exception
             raise ValueError("Invalid action specified")
 
         except Exception as e:
             # Handle the exception and return an error response
             return f"An error occurred: {e}", 400
-        if self.action == 'login':
-            if request.method == 'POST':
-                self.userName = request.form.get('username')
-                self.password = request.form.get('password')
-                return self.login()
-            return render_template('login.html')
-        
-        if self.action == 'logout':
-            return self.logout()
-
