@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 class LoadData():
     def __init__(self, file_HR, file_EDA):
@@ -79,4 +80,21 @@ class LoadData():
 # NOTE: temporary for this semester
 HR_file = '2024-11-23_23-37-50-480147_HR.csv'
 EA_file = '2024-11-23_23-37-50-480147_EA.csv'
-print(LoadData(HR_file, EA_file).dataframe)
+df = LoadData(HR_file, EA_file).dataframe
+print(df)
+
+plt.title('Heart Rate Vs Time')
+plt.plot(df['Interval'], df['HR'], label='Heart Rate')
+plt.xlabel('Time (10s intervals)')
+plt.ylabel('Heart Rate')
+plt.legend()
+plt.savefig('HR_sample.jpg')
+plt.show()
+
+plt.title('EDA Vs Time')
+plt.plot(df['Interval'], df['EA'], label='EDA')
+plt.xlabel('Time (10s intervals)')
+plt.ylabel('EDA')
+plt.legend()
+plt.savefig('EDA_sample.jpg')
+plt.show()
