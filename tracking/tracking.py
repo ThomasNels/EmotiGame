@@ -11,7 +11,7 @@ mouse_positions = []
 key_presses = 0
 tracking = True
 start_time = time.time()
-stop_key_combo = {"<ctrl>", "<shift>", "q"}
+stop_key = "+"
 pressed_keys = set()
 csv_file = "tracking_data.csv"
 
@@ -61,22 +61,16 @@ def calculate_erratic_score():
 def on_press(key):
     global key_presses, pressed_keys
     try:
-        pressed_keys.add(key.char.lower())
-    except AttributeError:
-        pressed_keys.add(f"<{key.name}>")
-
-    # Checks for stop command
-    if pressed_keys.issuperset(stop_key_combo):
-        print("Stop command received. Exiting...")
+        key.char == stop_key:
+        print("Stop key pressed")
         sys.exit(0)
+    except AttributeError:
+        pass
 
     key_presses += 1
 
 def on_release(key):
-    try:
-        pressed_keys.discard(key.char.lower())
-    except AttributeError:
-        pressed_keys.discard(f"<{key.name}>")
+    pass
 
 # Monitor APM and erratic score
 def monitor_metrics():
