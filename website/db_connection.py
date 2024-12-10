@@ -60,10 +60,51 @@ def create_tables():
         forms TEXT
     );
     '''
+    create_survey_table = '''
+        CREATE TABLE IF NOT EXISTS Surveys (
+            survey_id SERIAL PRIMARY KEY,
+            q1 INTEGER,
+            q2 INTEGER,
+            q3 INTEGER,
+            q4 INTEGER,
+            q5 INTEGER,
+            q6 INTEGER,
+            q7 INTEGER,
+            q8 INTEGER,
+            q9 INTEGER,
+            q10 INTEGER,
+            q11 INTEGER,
+            q12 INTEGER,
+            q13 INTEGER,
+            q14 INTEGER,
+            q15 INTEGER,
+            q16 INTEGER,
+            q17 INTEGER,
+            q18 INTEGER,
+            q19 INTEGER,
+            q20 INTEGER,
+            q21 INTEGER,
+            q22 INTEGER,
+            q23 INTEGER,
+            q24 INTEGER,
+            q25 INTEGER,
+            q26 INTEGER,
+            q27 INTEGER,
+            q28 INTEGER,
+            q29 INTEGER,
+            q30 INTEGER,
+            q31 INTEGER,
+            q32 INTEGER,
+            q33 INTEGER,
+            q34 INTEGER,
+            q35 INTEGER
+    );
+    '''
 
     # Execute table creation queries
     connection.execute_query(create_user_table)
     connection.execute_query(create_forms_table)
+    connection.execute_query(create_survey_table)
 
     # Close the connection
     connection.close()

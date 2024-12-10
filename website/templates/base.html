@@ -31,6 +31,12 @@
                     class="{% if request.endpoint == 'rocket_league' %} active {% endif %}">
                     Rocket League
                 </a>
+                {% if session.get('username') %}
+                <a href="{{ url_for('survey') }}"
+                    class="{% if request.endpoint == 'survey' %} active {% endif %}">
+                    Surveys
+                {% endif %}
+                </a>
                 {% if (session.get('user_id')) == 1 %}
                 <a href="{{ url_for('admin') }}"
                     class="{% if request.endpoint == 'admin' %} active {% endif %}">
@@ -48,10 +54,7 @@
                         Login
                     </a>
                 {% endif %}
-                <a href="{{ url_for('survey') }}"
-                    class="{% if request.endpoint == 'survey' %} active {% endif %}">
-                    Surveys
-                </a>
+
                 <!-- TODO: add EmotiGame image to right side of navbar -->
             </nav>
         {% endblock nav %}
