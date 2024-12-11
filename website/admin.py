@@ -2,6 +2,9 @@ from flask import request, render_template, send_file, redirect, flash, url_for,
 from flask.views import View
 
 class admin(View):
+    """Class that manages the admin view for the website.
+        TODO: List attributes for the class view.
+    """
     def __init__(self):
         super().__init__()
 
@@ -13,6 +16,8 @@ class admin(View):
             return f'Uploaded: '
 
     def dispatch_request(self):
+        # TODO: update the code to reflect changes to to the database once made.
+        # later it will check the session id for the admin field in the database.
         if session.get('user_id') == 1:
             return render_template('admin.html')
         else:
