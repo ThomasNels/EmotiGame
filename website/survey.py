@@ -28,9 +28,9 @@ class Survey(View):
         shuffled_questions = self.survey_questions
         random.shuffle(shuffled_questions)
         return shuffled_questions
-    
+
     def save_answers(self):
-        
+
         # Retrieve submitted answers
         submitted_answers = request.form
         survey_data = []
@@ -67,7 +67,7 @@ class Survey(View):
         else:
             flash('Sorry, you need to be logged in to access that page.')
             return redirect(url_for('index'))
-    
+
 #=======================
 # Child classes that have the questions
 #=======================
@@ -162,4 +162,4 @@ class IPQ(Survey):
             (34, "How real did the virtual world seem to you.", ["About as real as an imagined world", "Indistinguishable from the real world"]),
             (35, "The virtual world seemed more realistic then the real world.", ["Fully disagree", "Fully agree"])
         ]
-        
+

@@ -9,13 +9,14 @@ from survey import Survey
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 
+# Creates the database tables from db_connection
 create_tables()
 
 @app.route('/')
 def index():
     return render_template('index.html')
-    
-#page routes
+
+# Page routes
 app.add_url_rule('/login', view_func=sessionManager.as_view('login', action='login'), methods=['GET', 'POST'])
 app.add_url_rule('/logout', view_func=sessionManager.as_view('logout', action='logout'), methods=['GET'])
 app.add_url_rule('/admin', view_func=admin.as_view('admin'), methods=['GET', 'POST'])
