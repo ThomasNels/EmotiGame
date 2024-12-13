@@ -18,6 +18,8 @@ class admin(View):
     def dispatch_request(self):
         # TODO: update the code to reflect changes to to the database once made.
         # later it will check the session id for the admin field in the database.
+
+        # check if user is admin and display page, else redirect to home page with message
         if session.get('user_id') == 1:
             return render_template('admin.html')
         else:

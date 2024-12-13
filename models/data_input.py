@@ -1,3 +1,6 @@
+# load data in from parsed EmotiBit CSV files
+# used by SVM and Random Forest models
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -7,6 +10,9 @@ class LoadData():
         self.file_EDA = file_EDA
         self.dataframe = self.create_dataframe()
 
+    # commented out code may be used next semester, depending on which features we decide to use based on model performance
+    # used the webpage below for help with pandas and creating the final dataframe (merging)
+    # https://www.geeksforgeeks.org/python-pandas-merging-joining-and-concatenating/ 
     def create_dataframe(self):
         columns_HR = ['LocalTimestamp', 'EmotiBitTimestamp', 'HR']
         # columns_BI = ['LocalTimestamp', 'EmotiBitTimestamp', 'BI']
@@ -31,18 +37,13 @@ class LoadData():
         # dataframe_EDA = pd.merge(dataframe_EL, dataframe_EA, on=['LocalTimestamp', 'EmotiBitTimestamp'])
         dataframe_EDA = dataframe_EA
 
-        # print(dataframe_EDA)
 
         # NOTE: Time is in ms
-        # NOTE: likely will be used to find EmotiBitTimestamp for key events next semester
         # dataframe_times = pd.read_csv('2024-11-23_23-37-50-480147_timesyncmap.csv')
         # start_time = dataframe_times.iloc[0]['EmotiBitStartTime']
         # end_time = dataframe_times.iloc[0][' EmotiBitEndTime']
 
         start_dataframe_time = max(dataframe_HR.iloc[0]['EmotiBitTimestamp'], dataframe_EDA.iloc[0]['EmotiBitTimestamp'])
-        # print(start_dataframe_time)
-        # end_dataframe_time = min(dataframe_HR.iloc[-1]['EmotiBitTimestamp'], dataframe_EDA.iloc[-1]['EmotiBitTimestamp'])
-        # print(end_dataframe_time)
 
         # NOTE: 10 s intervals (modify for interval duration)
         interval = 10000
@@ -50,14 +51,11 @@ class LoadData():
         # NOTE: only here for testing purposes during this semester
         key_event_time = 528939
         key_event_interval = ((key_event_time - start_dataframe_time) // interval).astype(int)
-        # print(key_event_interval)
 
         dataframe_HR['Interval'] = ((dataframe_HR['EmotiBitTimestamp'] - start_dataframe_time) // interval).astype(int)
         dataframe_HR = dataframe_HR.groupby('Interval')['HR'].mean().reset_index()
-        # print(dataframe_HR)
         dataframe_EDA['Interval'] = ((dataframe_EDA['EmotiBitTimestamp'] - start_dataframe_time) // interval).astype(int)
         dataframe_EDA = dataframe_EDA.groupby('Interval')['EA'].mean().reset_index()
-        # print(dataframe_EDA)
 
         merged_dataframe = pd.merge(dataframe_HR, dataframe_EDA, on=['Interval'])
 
