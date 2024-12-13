@@ -1,5 +1,9 @@
 #A class to handle showing the survey questions and its responses
 
+#The code in this file was originally written by Levi Scully and was 
+#converted into python and adapted for the purposes of this project
+#by Morgan Jensen
+
 #Libraries
 from flask import request, render_template, redirect, flash, url_for, session
 from flask.views import View
