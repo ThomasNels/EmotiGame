@@ -1,4 +1,3 @@
-import sys
 from pynput import mouse, keyboard
 import time
 import math
@@ -11,7 +10,7 @@ mouse_positions = []
 key_presses = 0
 tracking = True
 start_time = time.time()
-stop_key = "+"
+stop_key = "]"
 pressed_keys = set()
 csv_file = "tracking_data.csv"
 
@@ -60,17 +59,13 @@ def calculate_erratic_score():
 # Keyboard listener
 def on_press(key):
     global key_presses, pressed_keys
-    try:
-        key.char == stop_key:
-        print("Stop key pressed")
-        sys.exit(0)
-    except AttributeError:
-        pass
+    # NOTE: we don't need pressed_keys unless we are trying to track which keys are pressed (delete later once decided)
 
     key_presses += 1
 
 def on_release(key):
-    pass
+    if key == keyboard.Key.delete:
+        return False
 
 # Monitor APM and erratic score
 def monitor_metrics():
@@ -94,18 +89,11 @@ def monitor_metrics():
 
         print(f"Logged to CSV: {timestamp}, APM: {apm:.2f}, Erratic Score: {erratic_score:.2f}")
 
-# Setup listeners
-mouse_listener = mouse.Listener(on_move=on_move)
-keyboard_listener = keyboard.Listener(on_press=on_press, on_release=on_release)
-
-# Start listeners
-mouse_listener.start()
-keyboard_listener.start()
-
 # Start monitoring metrics
 monitor_thread = threading.Thread(target=monitor_metrics, daemon=True)
 monitor_thread.start()
 
-# Keep program running
-mouse_listener.join()
-keyboard_listener.join()
+# create and start listeners 
+with mouse.Listener(on_move=on_move) as listener:
+    with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
+        listener.join()
