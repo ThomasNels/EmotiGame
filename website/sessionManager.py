@@ -9,9 +9,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-#class definition
 class sessionManager(View):
-    #class attributes
+    """A basic session manager class to manage the session for a user logged in.
+    Attributes:
+        userName: string
+        password: string
+        user_id: int
+        action: flask method
+        db_connection: db_connection class for a database connection
+    """
     def __init__(self, action):
         self.userName = None
         self.password = None
@@ -22,9 +28,8 @@ class sessionManager(View):
     def __del__(self):
         self.db_connection.close()
 
-    #authentication function
     def auth(self):
-        #check log in infor with the database
+        # Authenticates the user versus the database information
         query = """
         SELECT user_id, password FROM User_Information WHERE username = %s;
         """
@@ -33,11 +38,13 @@ class sessionManager(View):
         if result:
             stored_password = result[1]
             self.user_id = result[0]
-            return stored_password == self.password  # Add hashing logic if needed (e.g., bcrypt)
+            return stored_password == self.password  # TODO: Add hashing logic if needed (e.g., bcrypt)
         return False
 
     def create(self):
+        # Creates a new user for the webstie
         if request.method == 'POST':
+            # TODO: add name functionality
             new_username = request.form.get("new_username")
             new_email = request.form.get("new_email")
             new_password = request.form.get("new_password")
@@ -59,6 +66,7 @@ class sessionManager(View):
 
             # TODO: add hashing logic to password input
 
+            # inserts information into the database
             insert_query = """
             INSERT INTO User_Information (username, email, password) VALUES (%s, %s, %s);
             """
@@ -69,8 +77,8 @@ class sessionManager(View):
 
         return render_template('create.html')
 
-    #log in function
     def login(self):
+        # Uses the auth function to ensure the user can login
         if self.auth():
             session['username'] = self.userName
             session['user_id'] = self.user_id
