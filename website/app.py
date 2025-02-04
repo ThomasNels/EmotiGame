@@ -24,21 +24,18 @@ app.add_url_rule('/create', view_func=sessionManager.as_view('create', action='c
 app.add_url_rule('/survey', view_func=Survey.as_view('survey'), methods=['GET','POST'])
 
 # NOTE: Temporary until figuring out best way for game analytics pages
-@app.route('/chess')
-def chess():
-    return render_template('chess.html')
 
 @app.route('/league_of_legends')
 def league():
     return render_template('league.html')
 
-@app.route('/valorant')
-def valorant():
-    return render_template('valorant.html')
+@app.route('/contributors')
+def contributors():
+    return render_template('contributors.html')
 
-@app.route('/rocket_league')
-def rocket():
-    return render_template('rocket.html')
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == "__main__":
     # change debug to false to hide error from displaying on website, set to true for testing purposes
