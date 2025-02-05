@@ -11,14 +11,35 @@
         {% endif %}
     {% endwith %}
     <!-- TODO: improve presentation of page -->
+
     <h1>
-        EmotiGame Landing Page
+        Welcome to the EmotiGame Study
     </h1>
 
-    <!-- If user is logged in, present a welcome message. If not then promt user to log in -->
-    {% if session.get('username') %}
-        <p> Welcome, {{ session.get('username') }}.</p>
-    {% else %}
-        <p>Please log in.</p>
-    {% endif %}
+    <p>
+        We are on a mission to uncover biometric indicators of gaming skill. By analyzing heart rate, keyboard activity, and mouse movment, we aim to understand what sets skilled players apart. Why does this matter? We want to help improve skill development and future game design for better player experience. Feel free to explore our website and learn more about our research!
+    </p>
+
+    <h3>
+        Want to learn more?
+    </h3>
+    <p>
+        Go to our about page or click here:<br>
+        <a href="{{ url_for('about') }}"
+                    class="{% if request.endpoint == 'about' %} active {% endif %}">
+                    about page
+        </a>
+    </p>
+
+    <h3>
+        Are you a participant?
+    </h3>    
+    <p>
+        Log in here:<br>
+        <a href="{{ url_for('login') }}"
+                    class="{% if request.endpoint == 'login' %} active {% endif %}">
+                    Login/Create Account
+        </a>
+    </p>
+
 {% endblock %}

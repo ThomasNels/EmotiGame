@@ -15,21 +15,17 @@
                     class="{% if request.endpoint == 'index' %} active {% endif %}">
                     Home
                 </a>
-                <a href="{{ url_for('chess') }}"
-                    class="{% if request.endpoint == 'chess' %} active {% endif %}">
-                    Chess
+                <a href="{{ url_for('about') }}"
+                    class="{% if request.endpoint == 'about' %} active {% endif %}">
+                    About
+                </a>
+                <a href="{{ url_for('contributors') }}"
+                    class="{% if request.endpoint == 'contributors' %} active {% endif %}">  
+                    Contributors
                 </a>
                 <a href="{{ url_for('league') }}"
                     class="{% if request.endpoint == 'league_of_legends' %} active {% endif %}">
-                    League Of Legends
-                </a>
-                <a href="{{ url_for('valorant') }}"
-                    class="{% if request.endpoint == 'valorant' %} active {% endif %}">
-                    Valorant
-                </a>
-                <a href="{{ url_for('rocket') }}"
-                    class="{% if request.endpoint == 'rocket_league' %} active {% endif %}">
-                    Rocket League
+                    Results
                 </a>
                 {% if session.get('username') %}
                 <a href="{{ url_for('survey') }}"
