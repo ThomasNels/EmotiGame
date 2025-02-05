@@ -71,13 +71,13 @@ def on_release(key):
 def monitor_metrics():
     global start_time, key_presses, mouse_positions
     while True:
-        time.sleep(60)
+        time.sleep(10)
 
         elapsed_time = time.time() - start_time
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # APM calculation
-        apm = key_presses / (elapsed_time / 60)
+        apm = key_presses / (elapsed_time / 10)
 
         # Erratic movement calculation
         erratic_score = calculate_erratic_score()
