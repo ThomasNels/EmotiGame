@@ -1,98 +1,92 @@
-# load data in from parsed EmotiBit CSV files
+# load data in from parsed EmotiBit CSV files, mouse/keyboard tracking, and timestamp file
 # used by SVM and Random Forest models
 
 import pandas as pd
 import matplotlib.pyplot as plt
 
 class LoadData():
-    def __init__(self, file_HR, file_EDA):
+    def __init__(self, file_HR, file_mouse, file_time):
         self.file_HR = file_HR
-        self.file_EDA = file_EDA
+        self.file_mouse = file_mouse
+        self.file_time = file_time
         self.dataframe = self.create_dataframe()
 
-    # commented out code may be used next semester, depending on which features we decide to use based on model performance
     # used the webpage below for help with pandas and creating the final dataframe (merging)
     # https://www.geeksforgeeks.org/python-pandas-merging-joining-and-concatenating/ 
     def create_dataframe(self):
         columns_HR = ['LocalTimestamp', 'EmotiBitTimestamp', 'HR']
-        # columns_BI = ['LocalTimestamp', 'EmotiBitTimestamp', 'BI']
-        columns_EA = ['LocalTimestamp', 'EmotiBitTimestamp', 'DataLength', 'EA']
-        # columns_EL = ['LocalTimestamp', 'EmotiBitTimestamp', 'DataLength', 'EL']
+        columns_mouse = ['Timestamp', 'APM', 'Erratic Score']
+        columns_timestamp = ['Timestamp', 'Event']
 
         # NOTE: Next semester we will decide on specific features we want to focus on, may change based on the model accuracies
         dataframe_HR = pd.read_csv(self.file_HR, usecols=columns_HR)
-        # dataframe_BI = pd.read_csv('2024-11-23_23-37-50-480147_BI.csv', usecols=columns_BI)
-        # dataframe_HR = pd.merge(dataframe_HR, dataframe_BI, on=['LocalTimestamp', 'EmotiBitTimestamp'])
+        dataframe_mouse = pd.read_csv(self.file_mouse, usecols=columns_mouse)
+        dataframe_time = pd.read_csv(self.file_time, usecols=columns_timestamp)
 
-        # print(dataframe_HR)
-        # NOTE: Work on Spring Semester to decide on exact features we want to use
-        dataframe_EA = pd.read_csv(self.file_EDA, usecols=columns_EA)
-        # dataframe_EL = pd.read_csv('2024-11-23_23-37-50-480147_EL.csv', usecols=columns_EL)
-        # dataframe_EDA = pd.merge(dataframe_EL, dataframe_EA, on=['LocalTimestamp', 'EmotiBitTimestamp'])
-        dataframe_EA = dataframe_EA[dataframe_EA['DataLength'] == 1]
-        dataframe_EA = dataframe_EA.drop(columns=['DataLength'])
-        # dataframe_EL = pd.read_csv('2024-11-23_23-37-50-480147_EL.csv', usecols=columns_EL)
-        # dataframe_EL = dataframe_EL[dataframe_EL['DataLength'] == 1]
-        # dataframe_EL = dataframe_EL.drop(columns=['DataLength'])
-        # dataframe_EDA = pd.merge(dataframe_EL, dataframe_EA, on=['LocalTimestamp', 'EmotiBitTimestamp'])
-        dataframe_EDA = dataframe_EA
+        # sync timestamps
+        dataframe_time['Timestamp'] = pd.to_datetime(dataframe_time['Timestamp']) + pd.Timedelta(hours=8)
+        dataframe_time['Timestamp'] = dataframe_time['Timestamp'].astype(int) // 10 ** 9
+        dataframe_mouse['Timestamp'] = pd.to_datetime(dataframe_mouse['Timestamp']) + pd.Timedelta(hours=8)
+        dataframe_mouse['Timestamp'] = dataframe_mouse['Timestamp'].astype(int) // 10 ** 9
+        dataframe_HR['LocalTimestamp'] = dataframe_HR['LocalTimestamp'].astype(int)
 
+        start_time = dataframe_time.loc[dataframe_time['Event'] == 'Game Start', 'Timestamp']
+        
+        try:
+            if not start_time.empty:
+                start_time = start_time.iloc[0]
+        except AttributeError:
+            print('No Game Start recorded')
 
-        # NOTE: Time is in ms
-        # dataframe_times = pd.read_csv('2024-11-23_23-37-50-480147_timesyncmap.csv')
-        # start_time = dataframe_times.iloc[0]['EmotiBitStartTime']
-        # end_time = dataframe_times.iloc[0][' EmotiBitEndTime']
-
-        start_dataframe_time = max(dataframe_HR.iloc[0]['EmotiBitTimestamp'], dataframe_EDA.iloc[0]['EmotiBitTimestamp'])
+        # calculate base heartrate
+        base_heartrate = dataframe_HR[(dataframe_HR['LocalTimestamp'] >= dataframe_HR['LocalTimestamp'][0]) &
+                                        (dataframe_HR['LocalTimestamp'] < start_time)]['HR'].mean()
 
         # NOTE: 10 s intervals (modify for interval duration)
-        interval = 10000
+        interval = 10
 
-        # NOTE: only here for testing purposes during this semester
-        key_event_time = 528939
-        key_event_interval = ((key_event_time - start_dataframe_time) // interval).astype(int)
-
-        dataframe_HR['Interval'] = ((dataframe_HR['EmotiBitTimestamp'] - start_dataframe_time) // interval).astype(int)
+        dataframe_HR['Interval'] = ((dataframe_HR['LocalTimestamp'] - start_time) // interval).astype(int)
         dataframe_HR = dataframe_HR.groupby('Interval')['HR'].mean().reset_index()
-        dataframe_EDA['Interval'] = ((dataframe_EDA['EmotiBitTimestamp'] - start_dataframe_time) // interval).astype(int)
-        dataframe_EDA = dataframe_EDA.groupby('Interval')['EA'].mean().reset_index()
+        dataframe_mouse['Interval'] = ((dataframe_mouse['Timestamp'] - start_time) // interval).astype(int)
+        dataframe_mouse = dataframe_mouse.groupby('Interval')[['APM', 'Erratic Score']].mean().reset_index()
 
-        merged_dataframe = pd.merge(dataframe_HR, dataframe_EDA, on=['Interval'])
+        merged_dataframe = pd.merge(dataframe_HR, dataframe_mouse, on=['Interval'])
+        merged_dataframe = merged_dataframe[merged_dataframe['Interval'] >= 0]
+        merged_dataframe['Base HR'] = base_heartrate
 
-        # NOTE: key event = 1, else -1
+        # # NOTE: key event = 1, else -1
+        key_events = dataframe_time.loc[dataframe_time['Event'] == 'Key Event', 'Timestamp']
+        print(key_events)
+        key_event_intervals = ((key_events - start_time) // interval).astype(int)
+        print(key_event_intervals)
         merged_dataframe['EventLabel'] = -1
-        for index, row in merged_dataframe.iterrows():
-            if row['Interval'] == key_event_interval:
-                merged_dataframe.at[index, 'EventLabel'] = 1
+        for interval in key_event_intervals:
+            merged_dataframe.loc[merged_dataframe['Interval'] == interval, 'EventLabel'] = 1
 
-                # NOTE: Next semester decide on how to label events after test run of study and monitoring live data
-                merged_dataframe.at[index+1, 'EventLabel'] = 1
-                break
-        # print(merged_dataframe)
-
-        # NOTE: label applied to entire dataframe (1 = skilled, -1 = unskilled player)
-        merged_dataframe['label'] = 1
+        # # NOTE: label applied to entire dataframe (1 = skilled, -1 = unskilled player)
+        # merged_dataframe['label'] = 1
 
         return merged_dataframe
 
 # NOTE: temporary for this semester
-HR_file = '2024-11-23_23-37-50-480147_HR.csv'
-EA_file = '2024-11-23_23-37-50-480147_EA.csv'
-df = LoadData(HR_file, EA_file).dataframe
+HR_file = 'test1/2025-02-19_10-35-34-762016_HR.csv'
+mouse_file = 'test1/tracking_data.csv'
+time_file = 'test1/timestamp_data.csv'
+df = LoadData(HR_file, mouse_file, time_file).dataframe
 print(df)
 
-plt.title('Heart Rate Vs Time')
-plt.plot(df['Interval'], df['HR'], label='Heart Rate')
-plt.xlabel('Time (10s intervals)')
-plt.ylabel('Heart Rate')
-plt.legend()
-plt.savefig('HR_sample.jpg')
-plt.show()
+# plt.title('Heart Rate Vs Time')
+# plt.plot(df['Interval'], df['HR'], label='Heart Rate')
+# plt.xlabel('Time (10s intervals)')
+# plt.ylabel('Heart Rate')
+# plt.legend()
+# plt.savefig('HR_sample.jpg')
+# plt.show()
 
-plt.title('EDA Vs Time')
-plt.plot(df['Interval'], df['EA'], label='EDA')
-plt.xlabel('Time (10s intervals)')
-plt.ylabel('EDA')
-plt.legend()
-plt.savefig('EDA_sample.jpg')
-plt.show()
+# plt.title('EDA Vs Time')
+# plt.plot(df['Interval'], df['EA'], label='EDA')
+# plt.xlabel('Time (10s intervals)')
+# plt.ylabel('EDA')
+# plt.legend()
+# plt.savefig('EDA_sample.jpg')
+# plt.show()
