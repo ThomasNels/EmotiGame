@@ -1,28 +1,49 @@
-button {
-    background-color: silver;
-    font-size: medium;
-    padding: 5px;
-    margin-left: 10px;
-    margin-top: 10px;
-}
-
-.documents {
-    width: 80%;
-}
-
-th {
-    padding: 10px;
-    text-align: left;
-}
-
-.input {
-    width: 10px;
-}
-
-tbody tr:nth-child(odd) {
-    background-color: silver;
-}
-
-tbody tr:nth-child(even) {
+body {
     background-color: white;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: black;
+}
+
+form {
+    background: white;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px black;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+    color: black;
+}
+
+select, input[type="file"], textarea, button {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+
+button {
+    background-color: green;
+    color: white;
+    font-size: 16px;
+    border: none;
+    padding: 10px;
+    margin-top: 15px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: forestgreen;
 }
