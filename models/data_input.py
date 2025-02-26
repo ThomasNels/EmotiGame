@@ -1,20 +1,22 @@
 # load data in from parsed EmotiBit CSV files, mouse/keyboard tracking, and timestamp file
-# used by SVM and Random Forest models
+# used by SVM and Random Forest models 
+# NOTE: implement jupyter notebook after data collection (will utilize this class)
 
 import pandas as pd
 import matplotlib.pyplot as plt
 
 class LoadData():
-    def __init__(self, file_HR, file_mouse, file_time):
+    def __init__(self, file_HR, file_mouse, file_time, skilled_player=False):
         self.file_HR = file_HR
         self.file_mouse = file_mouse
         self.file_time = file_time
+        self.skilled_player = skilled_player
         self.dataframe = self.create_dataframe()
 
     # used the webpage below for help with pandas and creating the final dataframe (merging)
     # https://www.geeksforgeeks.org/python-pandas-merging-joining-and-concatenating/ 
     def create_dataframe(self):
-        columns_HR = ['LocalTimestamp', 'EmotiBitTimestamp', 'HR']
+        columns_HR = ['LocalTimestamp', 'HR']
         columns_mouse = ['Timestamp', 'APM', 'Erratic Score']
         columns_timestamp = ['Timestamp', 'Event']
 
@@ -56,15 +58,16 @@ class LoadData():
 
         # # NOTE: key event = 1, else -1
         key_events = dataframe_time.loc[dataframe_time['Event'] == 'Key Event', 'Timestamp']
-        print(key_events)
         key_event_intervals = ((key_events - start_time) // interval).astype(int)
-        print(key_event_intervals)
         merged_dataframe['EventLabel'] = -1
         for interval in key_event_intervals:
             merged_dataframe.loc[merged_dataframe['Interval'] == interval, 'EventLabel'] = 1
 
         # # NOTE: label applied to entire dataframe (1 = skilled, -1 = unskilled player)
-        # merged_dataframe['label'] = 1
+        if self.skilled_player == True:
+            merged_dataframe['Label'] = 1
+        else:
+            merged_dataframe['Label'] = -1
 
         return merged_dataframe
 
