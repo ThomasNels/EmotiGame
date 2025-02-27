@@ -8,10 +8,11 @@ load_dotenv()
 class DatabaseConnection:
     """
     This class manages database queries and connections for the website.
-    Attributes: 
+    Attributes:
         conn: the connection to the database itself.
         cursor: the cursor to the connection.
     """
+
     def __init__(self, db_name, user, password, host='localhost', port='5432'):
         # Initialize database connection
         self.conn = psycopg2.connect(
@@ -48,37 +49,10 @@ def create_tables():
     # Connect to the database
     connection = DatabaseConnection(db_name, db_user, db_password)
 
-    # SQL statements to create tables
-    create_participant_table = '''
-    CREATE TABLE IF NOT EXISTS Participants (
-        participant_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-        participant_age INTEGER,
-        ethnicity_id INTEGER REFERENCES Ethinicity(ethinicity_id),
-        email VARCHAR,
-        password VARCHAR,
-        survey_id INTEGER REFERENCES Survey(survey_id),
-        activity_id INTEGER REFERENCES Activity(activity_id),
-        session_id INTEGER REFERENCES Sessions(session_id),
-        participant_height INTEGER,
-        participant_weight INTEGER
-    );
-    '''
-
-    create_sessions_table = '''
-    CREATE TABLE IF NOT EXISTS Sessions (
-        session_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-        unparsed_data BLOB,
-        timestamp_data BLOB
-    );
-    '''
-
-    create_recordings_table = '''
-    CREATE TABLE IF NOT EXISTS Recordings (
-        recording_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-        game VARCHAR,
-        session_id INTEGER REFERENCES Sessions(session_id),
-        recording BLOB,
-        recording_date DATETIME
+    create_activity_table = '''
+    CREATE TABLE IF NOT EXISTS Activity (
+        activity_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        activity_type VARCHAR
     );
     '''
 
@@ -89,29 +63,57 @@ def create_tables():
     );
     '''
 
+    # SQL statements to create tables
+    create_participant_table = '''
+    CREATE TABLE IF NOT EXISTS Participants (
+        participant_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        participant_age INTEGER,
+        ethnicity_id INTEGER REFERENCES Ethnicity(ethnicity_id),
+        email VARCHAR,
+        password VARCHAR,
+        activity_id INTEGER REFERENCES Activity(activity_id),
+        participant_height INTEGER,
+        participant_weight INTEGER
+    );
+    '''
+
+    create_sessions_table = '''
+    CREATE TABLE IF NOT EXISTS Sessions (
+        session_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        participant_id INTEGER REFERENCES Participants(participant_id),
+        unparsed_data VARCHAR,
+        mktracking_data VARCHAR,
+        timestamp_data VARCHAR
+    );
+    '''
+
+    create_recordings_table = '''
+    CREATE TABLE IF NOT EXISTS Recordings (
+        recording_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        game VARCHAR,
+        session_id INTEGER REFERENCES Sessions(session_id),
+        recording VARCHAR,
+        recording_date TIMESTAMP
+    );
+    '''
+
     create_survey_table = '''
     CREATE TABLE IF NOT EXISTS Survey (
         survey_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-        presence_survey BLOB,
-        gameplay_survey BLOB,
-        session_id INTEGER REFERNECES Sessions(session_id)
+        participant_id INTEGER REFERENCES Participants(participant_id),
+        presence_survey VARCHAR,
+        gameplay_survey VARCHAR,
+        session_id INTEGER REFERENCES Sessions(session_id)
     );
     '''
 
-    create_activity_table = '''
-    CREATE TABLE IF NOT EXISTS Activity (
-        activity_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-        activity_type VARCHAR
-    );
-    '''
-
-    # Execute table creation queries
+    # Execute table creation queries in the correct order
+    connection.execute_query(create_activity_table)
+    connection.execute_query(create_ethnicity_table)
     connection.execute_query(create_participant_table)
     connection.execute_query(create_sessions_table)
     connection.execute_query(create_recordings_table)
-    connection.execute_query(create_ethnicity_table)
     connection.execute_query(create_survey_table)
-    connection.execute_query(create_activity_table)
 
     # Close the connection
     connection.close()
