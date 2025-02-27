@@ -11,7 +11,6 @@ with open(csv_file, mode='w', newline="") as file:
     writer.writerow(['Timestamp', 'Event'])
 
 def write_to_file(key):
-    print('in function')
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     with open(csv_file, mode='a', newline='') as file:
@@ -23,7 +22,6 @@ def write_to_file(key):
 def on_press(key):
     try:
         if key.char in events:
-            print('in loop')
             write_to_file(key.char)
     except AttributeError:
         pass
