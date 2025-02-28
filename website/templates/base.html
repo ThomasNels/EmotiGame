@@ -7,55 +7,69 @@
         <title>{% block title %} {% endblock %}</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
     </head>
-    <body>
-        <!-- TODO: improve presentation of page -->
-        {% block nav %}
-            <nav class="navbar">
-                <a href="{{ url_for('index') }}"
-                    class="{% if request.endpoint == 'index' %} active {% endif %}">
-                    Home
-                </a>
-                <a href="{{ url_for('about') }}"
-                    class="{% if request.endpoint == 'about' %} active {% endif %}">
-                    About
-                </a>
-                <a href="{{ url_for('contributors') }}"
-                    class="{% if request.endpoint == 'contributors' %} active {% endif %}">  
-                    Contributors
-                </a>
-                <a href="{{ url_for('league') }}"
-                    class="{% if request.endpoint == 'league_of_legends' %} active {% endif %}">
-                    Results
-                </a>
-                {% if session.get('username') %}
-                <a href="{{ url_for('survey') }}"
-                    class="{% if request.endpoint == 'survey' %} active {% endif %}">
-                    Surveys
-                {% endif %}
-                </a>
-                {% if (session.get('user_id')) == 1 %}
-                <a href="{{ url_for('admin') }}"
-                    class="{% if request.endpoint == 'admin' %} active {% endif %}">
-                    Admin
-                {% endif %}
-                </a>
-                {% if session.get('username') %}
-                    <a href="{{ url_for('logout') }}"
-                        class="{% if request.endpoint == 'logout' %} active {% endif %}">
-                        Logout
-                    </a>
-                {% else %}
-                    <a href="{{ url_for('login') }}"
-                        class="{% if request.endpoint == 'login' %} active {% endif %}">
-                        Login
-                    </a>
-                {% endif %}
 
-                <!-- TODO: add EmotiGame image to right side of navbar -->
-            </nav>
+    <header>
+        <div class="header_container">
+            <img src="static/images/logo.png" alt="EmotiGame Logo">
+            <h1>
+                EmotiGame Study
+            </h1>
+        </div>
+    </header>
+
+    <body>
+        {% block nav %}
+        <nav class="navbar">
+            <div class="navbar-left">
+                <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %} active {% endif %}">Home</a>
+                <a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %} active {% endif %}">About</a>
+                <a href="{{ url_for('contributors') }}" class="{% if request.endpoint == 'contributors' %} active {% endif %}">Contributors</a>
+                <a href="{{ url_for('league') }}" class="{% if request.endpoint == 'league' %} active {% endif %}">Results</a>
+        
+                {% if session.get('username') %}
+                <div class="dropdown">
+                    <button class="dropbtn {% if request.endpoint == 'presence_survey' or request.endpoint == 'gameplay_survey' %} active {% endif %}">
+                        Surveys <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="{{ url_for('presence_survey', survey_type='presence') }}" class="{% if request.endpoint == 'presence_survey' %} active {% endif %}">Presence Survey</a>
+                        <a href="{{ url_for('gameplay_survey', survey_type='game') }}" class="{% if request.endpoint == 'gameplay_survey' %} active {% endif %}">Gameplay Survey</a>
+                    </div>
+                </div>
+                
+                {% endif %}
+        
+                {% if (session.get('user_id')) == 1 %}
+                <a href="{{ url_for('admin') }}" class="{% if request.endpoint == 'admin' %} active {% endif %}">Admin</a>
+                {% endif %}
+            </div>
+        
+            <div class="navbar-right">
+                {% if session.get('username') %}
+                    <a href="#" onclick="document.getElementById('logout-dialog').showModal(); return false;">Log out</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="{% if request.endpoint == 'login' %} active {% endif %}">Login</a>
+                {% endif %}
+            </div>         
+        </nav>
+        
         {% endblock nav %}
         <div>
             {% block content %} {% endblock %}
         </div>
+
+        <dialog id="logout-dialog">
+            <h2>Are you sure you want to log out?</h2>
+            <div class="dialog-buttons">
+                <form method="GET" action="{{ url_for('logout') }}">
+                    <button type="submit" class="navy-button">Confirm</button>
+                </form>
+                <button class="navy-button" onclick="document.getElementById('logout-dialog').close(); return false;">Cancel</button>
+            </div>
+        </dialog>
+        
+        
+        
+
     </body>
 </html>

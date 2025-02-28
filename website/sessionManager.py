@@ -88,7 +88,6 @@ class sessionManager(View):
 
     #log out function
     def logout(self):
-        #TODO: Have check to ensure user wants to logout
         session.pop('username', None)
         session.pop('user_id', None)
         return redirect(url_for('index'))
