@@ -6,11 +6,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class DatabaseConnection:
-    """This class manages database queries and connections for the website.
-    Attributes:
-        conn = the connection to the database itself.
-        cursor = the cursor to the connection.
     """
+    This class manages database queries and connections for the website.
+    Attributes:
+        conn: the connection to the database itself.
+        cursor: the cursor to the connection.
+    """
+
     def __init__(self, db_name, user, password, host='localhost', port='5432'):
         # Initialize database connection
         self.conn = psycopg2.connect(
@@ -53,23 +55,41 @@ def create_tables():
     # Connect to the database
     connection = DatabaseConnection(db_name, db_user, db_password)
 
-    # SQL statements to create tables
-    # TODO: Fix the admin part of the current table.
-    create_user_table = '''
-    CREATE TABLE IF NOT EXISTS User_Information (
-        user_id SERIAL PRIMARY KEY,
-        username VARCHAR(50) UNIQUE NOT NULL,
-        password VARCHAR(100) NOT NULL,
-        email VARCHAR(100),
-        name VARCHAR(100)
+    create_activity_table = '''
+    CREATE TABLE IF NOT EXISTS Activity (
+        activity_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        activity_type VARCHAR
     );
     '''
 
-    create_forms_table = '''
-    CREATE TABLE IF NOT EXISTS Forms (
-        form_id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES User_Information(user_id),
-        forms TEXT
+    create_ethnicity_table = '''
+    CREATE TABLE IF NOT EXISTS Ethnicity (
+        ethnicity_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        ethnicity_type VARCHAR
+    );
+    '''
+
+    # SQL statements to create tables
+    create_participant_table = '''
+    CREATE TABLE IF NOT EXISTS Participants (
+        participant_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        participant_age INTEGER,
+        ethnicity_id INTEGER REFERENCES Ethnicity(ethnicity_id),
+        email VARCHAR,
+        password VARCHAR,
+        activity_id INTEGER REFERENCES Activity(activity_id),
+        participant_height INTEGER,
+        participant_weight INTEGER
+    );
+    '''
+
+    create_sessions_table = '''
+    CREATE TABLE IF NOT EXISTS Sessions (
+        session_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        participant_id INTEGER REFERENCES Participants(participant_id),
+        unparsed_data VARCHAR,
+        mktracking_data VARCHAR,
+        timestamp_data VARCHAR
     );
     '''
     create_survey_table = '''
@@ -113,9 +133,32 @@ def create_tables():
     );
     '''
 
-    # Execute table creation queries
-    connection.execute_query(create_user_table)
-    connection.execute_query(create_forms_table)
+    create_recordings_table = '''
+    CREATE TABLE IF NOT EXISTS Recordings (
+        recording_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        game VARCHAR,
+        session_id INTEGER REFERENCES Sessions(session_id),
+        recording VARCHAR,
+        recording_date TIMESTAMP
+    );
+    '''
+
+    create_survey_table = '''
+    CREATE TABLE IF NOT EXISTS Survey (
+        survey_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        participant_id INTEGER REFERENCES Participants(participant_id),
+        presence_survey VARCHAR,
+        gameplay_survey VARCHAR,
+        session_id INTEGER REFERENCES Sessions(session_id)
+    );
+    '''
+
+    # Execute table creation queries in the correct order
+    connection.execute_query(create_activity_table)
+    connection.execute_query(create_ethnicity_table)
+    connection.execute_query(create_participant_table)
+    connection.execute_query(create_sessions_table)
+    connection.execute_query(create_recordings_table)
     connection.execute_query(create_survey_table)
 
     # Close the connection
