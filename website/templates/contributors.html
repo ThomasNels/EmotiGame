@@ -1,38 +1,42 @@
 {% extends 'base.html' %} 
 {% block content %}
-    <!-- TODO: improve presentation of page -->
-    <h1>
-        Meet the people who made this happen!
-    </h1>
 
-    <h3>
-        Team 34:
-    </h3>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+    
+    <div class="container">
+        <h1>
+            Meet the people who made this happen!
+        </h1>
 
-    <p>
-        Morgan Jensen<br>
-        Carson Ramocinski<br>
-        Thomas Nelson
-    </p>
+        <h2>
+            Team 34:
+        </h2>
 
-    <h3>
-        Our Advisors:
-    </h3>
+        <p>
+            Morgan Jensen<br>
+            Carson Ramocinski<br>
+            Thomas Nelson
+        </p>
 
-    <p>
-        Michael Wilson - UNR CSE<br>
-        Sean Mongomery - Connected Future Labs
-    </p>
+        <h2>
+            Our Advisors:
+        </h2>
 
-    <h3>
-        Our Instructors (UNR CSE):
-    </h3>
+        <p>
+            Michael Wilson - UNR CSE<br>
+            Sean Mongomery - Connected Future Labs
+        </p>
 
-    <p>
-        David Feil-Seifer<br>
-        Sara Davis<br>
-        Vinh Le<br>
-        Levi Scully
-    </p>
+        <h2>
+            Our Instructors (UNR CSE):
+        </h2>
+
+        <p>
+            David Feil-Seifer<br>
+            Sara Davis<br>
+            Vinh Le<br>
+            Levi Scully
+        </p>
+    </div>
 
 {% endblock %}

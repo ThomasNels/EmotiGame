@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Page for data on League of Legends</h1>
-    <h2>Will be worked on Spring 2025</h2>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+    <div class="container">
+        <h1>Page for data on League of Legends</h1>
 
-    <!-- NOTE: This is temporary to show example plots from current data -->
-    <h2>Sample Data:</h2>
-    <img src="static/images/HR_sample.jpg" alt="Sample Heart Rate Data">
-    <img src="static/images/EDA_sample.jpg" alt="Sample EDA Data">
+        <!-- NOTE: This is temporary to show example plots from current data -->
+        <h2>Sample Data:</h2>
+        <img src="static/images/HR_sample.jpg" alt="Sample Heart Rate Data">
+        <img src="static/images/EDA_sample.jpg" alt="Sample EDA Data">
+    </div>
 {% endblock %}
