@@ -8,7 +8,6 @@
 from flask import request, render_template, redirect, flash, url_for, session
 from flask.views import View
 import random
-import os
 import csv
 
 #=======================
