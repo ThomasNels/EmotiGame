@@ -42,28 +42,25 @@ class admin(View):
                     timestamp_file = file_path
         # TODO: add timestamp file to function, re-work function for exact files from admin (split apart), need way to get session_id if needed
         # DatabaseConnection.execute_addition(participant_id=participant_id, unparsed_file=unparsed_file, mktracking_file=mktracking_file)
+   
     def dispatch_request(self):
         # NOTE: update to new database for admin privledge
-        # if session.get('user_id') == 1:
+        if session.get('user_id') == 1:
             if request.method == "POST":
                 # dictionary used to get files
-                # TODO: Use dictionary to upload files 
                 user_id = request.form.get('user_id')
                 files = {
                     'emotibit_file': request.files.get('emotibit_file'),
                     'tracking_file': request.files.get('tracking_file'),
                     'timestamp_file': request.files.get('timestamp_file'),
                 }
-                # TODO: call database class to upload file
-                # TODO: add {file.database_file_field}?
-                # TODO: Check if upload successful and change message based on success
+
                 self.upload_files(user_id, files)
-                # print(files)
-                # print(f'Uploaded: User_id = {user_id}, file: {files}')
+
                 flash('Successfully upload files')
-                # return redirect(url_for('index'))
+                return redirect(url_for('index'))
             users = self.get_users()
             return render_template('admin.html', users=users)
-        # else:
-        #     flash('Sorry, you need to be an admin to access that page.')
-        #     return redirect(url_for('index'))
+        else:
+            flash('Sorry, you need to be an admin to access that page.')
+            return redirect(url_for('index'))
