@@ -1,4 +1,6 @@
 import psycopg2
+from psycopg2 import sql
+from psycopg2.extras import RealDictCursor
 import os
 from dotenv import load_dotenv
 
@@ -22,23 +24,87 @@ class DatabaseConnection:
             host=host,
             port=port
         )
-        self.cursor = self.conn.cursor()
+        self.cursor = self.conn.cursor(cursor_factory=RealDictCursor)
 
     def execute_query(self, query, params=None):
-        self.cursor.execute(query, params)
-        self.conn.commit()
+        """
+        Execute a query and commit the transaction.
+        """
+        try:
+            self.cursor.execute(query, params)
+            self.conn.commit()
+        except Exception as e:
+            self.conn.rollback()
+            raise e
 
     def fetch_one(self, query, params=None):
-        self.cursor.execute(query, params)
-        return self.cursor.fetchone()
+        """
+        Execute a query and fetch a single result.
+        """
+        try:
+            self.cursor.execute(query, params)
+            return self.cursor.fetchone()
+        except Exception as e:
+            self.conn.rollback()
+            raise e
+
+    def execute_addition(self, participant_id, unparsed_file, mktracking_file, recording_file, p_survey_file, g_survey_file, session_id, game):
+        """
+        Insert data into Sessions, Recordings, and Survey tables.
+        """
+        try:
+            if session_id == 0:
+                # Create a new session only if one does not exist already.
+                self.cursor.execute(
+                    sql.SQL("""
+                        INSERT INTO Sessions (participant_id, unparsed_data, mktracking_data, timestamp_data)
+                        VALUES (%s, %s, %s, NOW())
+                        RETURNING session_id;
+                    """),
+                    (participant_id, unparsed_file, mktracking_file)
+                )
+                session_id = self.cursor.fetchone()['session_id']
+                self.conn.commit()
+
+            # Insert into Recordings table
+            self.cursor.execute(
+                sql.SQL("""
+                    INSERT INTO Recordings (game, session_id, recording, recording_date)
+                    VALUES (%s, %s, %s, NOW());
+                """),
+                (game, session_id, recording_file)
+            )
+
+            # Insert into Survey table
+            self.cursor.execute(
+                sql.SQL("""
+                    INSERT INTO Survey (presence_survey, gameplay_survey, session_id)
+                    VALUES (%s, %s, %s);
+                """),
+                (p_survey_file, g_survey_file, session_id)
+            )
+
+            self.conn.commit()
+        except Exception as e:
+            self.conn.rollback()
+            raise e
 
     def close(self):
-        self.cursor.close()
-        self.conn.close()
+        """
+        Close the cursor and connection.
+        """
+        if self.cursor:
+            self.cursor.close()
+        if self.conn:
+            self.conn.close()
 
-# Create tables if they don't exist
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
 def create_tables():
-    # Load database credentials from environment
     db_name = os.getenv('DB_NAME')
     db_user = os.getenv('DB_USER')
     db_password = os.getenv('DB_PASSWORD')
@@ -107,7 +173,6 @@ def create_tables():
     );
     '''
 
-    # Execute table creation queries in the correct order
     connection.execute_query(create_activity_table)
     connection.execute_query(create_ethnicity_table)
     connection.execute_query(create_participant_table)
@@ -115,7 +180,43 @@ def create_tables():
     connection.execute_query(create_recordings_table)
     connection.execute_query(create_survey_table)
 
-    # Close the connection
+    activity_levels = [
+        "1 - Bedridden",
+        "2 - Sedentary",
+        "3 - Lightly Active",
+        "4 - Moderately Active",
+        "5 - Active",
+        "6 - Very Active",
+        "7 - Highly Active",
+        "8 - Extremely Active",
+        "9 - Semi-Professional Athlete",
+        "10 - Professional Athlete"
+    ]
+
+    for activity in activity_levels:
+        insert_activity_query = f'''
+        INSERT INTO Activity (activity_type)
+        VALUES ('{activity}');
+        '''
+        connection.execute_query(insert_activity_query)
+
+    ethnicities = [
+        "Caucasian",
+        "African American",
+        "Hispanic",
+        "Asian",
+        "Native American",
+        "Pacific Islander",
+        "Other"
+    ]
+
+    for ethnicity in ethnicities:
+        insert_ethnicity_query = f'''
+        INSERT INTO Ethnicity (ethnicity_type)
+        VALUES ('{ethnicity}');
+        '''
+        connection.execute_query(insert_ethnicity_query)
+
     connection.close()
 
 if __name__ == "__main__":
