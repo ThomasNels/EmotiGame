@@ -37,7 +37,7 @@
                     Admin
                 {% endif %}
                 </a>
-                {% if session.get('username') %}
+                {% if session.get('email') %}
                     <a href="{{ url_for('logout') }}"
                         class="{% if request.endpoint == 'logout' %} active {% endif %}">
                         Logout

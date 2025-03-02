@@ -4,7 +4,7 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
     <h1>Upload CSV Files</h1>
-    <form method="POST">
+    <form method="POST", enctype="multipart/form-data">
         <label for="user_id">Select User:</label>
         <select id="user_id" name="user_id">
             {% for user in users %}
@@ -15,17 +15,11 @@
         <label for="emotibit_file">EmotiBit File:</label>
         <input type="file" id="emotibit_file" name="emotibit_file" required accept=".csv">
         
-        <label for="hr_file">HR File:</label>
-        <input type="file" id="hr_file" name="hr_file" required accept=".csv">
-        
         <label for="tracking_file">Tracking File:</label>
         <input type="file" id="tracking_file" name="tracking_file" required accept=".csv">
         
         <label for="timestamp_file">Timestamp File:</label>
         <input type="file" id="timestamp_file" name="timestamp_file" required accept=".csv">
-        
-        <label for="dataframe_file">Dataframe File:</label>
-        <input type="file" id="dataframe_file" name="dataframe_file" required accept=".csv">
         
         <button type="submit">Upload</button>
     </form>

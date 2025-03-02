@@ -16,8 +16,9 @@
     </h1>
 
     <!-- If user is logged in, present a welcome message. If not then promt user to log in -->
-    {% if session.get('username') %}
-        <p> Welcome, {{ session.get('username') }}.</p>
+    {% if session.get('email') %}
+        <!-- <p> Welcome, {{ session.get('username') }}.</p> -->
+         <p> Welcome </p>
     {% else %}
         <p>Please log in.</p>
     {% endif %}

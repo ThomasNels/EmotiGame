@@ -34,7 +34,7 @@ select, input[type="file"], textarea, button {
 }
 
 button {
-    background-color: green;
+    background-color: navy;
     color: white;
     font-size: 16px;
     border: none;
@@ -45,5 +45,5 @@ button {
 }
 
 button:hover {
-    background-color: forestgreen;
+    background-color: blue;
 }
