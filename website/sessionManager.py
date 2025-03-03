@@ -1,8 +1,12 @@
-from flask.views import MethodView  # Import MethodView
-from flask import request, session, redirect, url_for, render_template
-import bcrypt
-import os
+#A class to handle the login/logout functionality
+
+#Libraries
+from flask import request, redirect, url_for, session, render_template
+from flask.views import View
 from db_connection import DatabaseConnection
+import os
+from dotenv import load_dotenv
+import bcrypt
 
 load_dotenv()
 
