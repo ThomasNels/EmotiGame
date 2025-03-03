@@ -4,7 +4,17 @@ import bcrypt
 import os
 from db_connection import DatabaseConnection
 
-class sessionManager(MethodView):
+load_dotenv()
+
+class sessionManager(View):
+    """A basic session manager class to manage the session for a user logged in.
+    Attributes:
+        userName: string
+        password: string
+        user_id: int
+        action: flask method
+        db_connection: db_connection class for a database connection
+    """
     def __init__(self, action):
         super().__init__()
         self.email = None
@@ -17,6 +27,7 @@ class sessionManager(MethodView):
         self.db_connection.close()
 
     def auth(self):
+        # Authenticates the user versus the database information
         query = """
         SELECT participant_id, password FROM Participants WHERE email = %s;
         """
@@ -28,6 +39,7 @@ class sessionManager(MethodView):
         return False
 
     def create(self):
+        # Creates a new user for the webstie
         if request.method == 'POST':
             email = request.form.get("email")
             password = request.form.get("password")
@@ -85,6 +97,7 @@ class sessionManager(MethodView):
         return render_template('create.html')
 
     def login(self):
+        # Uses the auth function to ensure the user can login
         if self.auth():
             session['email'] = self.email
             session['user_id'] = self.user_id

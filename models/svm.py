@@ -10,7 +10,6 @@ class SVMModel():
         self.load_data()
         
     def load_data(self):
-        # change paramters of LoadData once we figure out how to handle all data once collected
         self.dataframe = LoadData('2024-11-23_23-37-50-480147_HR.csv', '2024-11-23_23-37-50-480147_EA.csv').dataframe
         self.y = self.dataframe[['label']]
         self.X = self.dataframe.drop(['label'], axis=1)

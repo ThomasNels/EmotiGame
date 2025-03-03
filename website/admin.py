@@ -7,6 +7,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class admin(View):
+    """Class that manages the admin view for the website.
+        TODO: List attributes for the class view.
+    """
     def __init__(self):
         super().__init__()
         self.db_connection = DatabaseConnection(os.getenv('DB_NAME'), os.getenv('DB_USER'), os.getenv('DB_PASSWORD'))
