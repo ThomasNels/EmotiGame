@@ -38,8 +38,8 @@ class admin(View):
                     unparsed_file = file_path
                 elif file_key == 'tracking_file':
                     mktracking_file = file_path
-                elif file_key == 'timestamp_file':
-                    timestamp_file = file_path
+                # elif file_key == 'timestamp_file':
+                #     timestamp_file = file_path
         # TODO: add timestamp file to function, re-work function for exact files from admin (split apart), need way to get session_id if needed
         # DatabaseConnection.execute_addition(participant_id=participant_id, unparsed_file=unparsed_file, mktracking_file=mktracking_file)
    
@@ -51,8 +51,8 @@ class admin(View):
                 user_id = request.form.get('user_id')
                 files = {
                     'emotibit_file': request.files.get('emotibit_file'),
-                    'tracking_file': request.files.get('tracking_file'),
-                    'timestamp_file': request.files.get('timestamp_file'),
+                    'tracking_file': request.files.get('tracking_file')
+                    # 'timestamp_file': request.files.get('timestamp_file'),
                 }
 
                 self.upload_files(user_id, files)
