@@ -1,0 +1,66 @@
+.container {
+    margin: auto;
+    width: 70%;
+    padding: 10px;
+}
+
+.container h1 {
+    font-size: 40px;
+    text-align: center;
+}
+
+.container p {
+    text-align: center;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 15px; 
+    margin: auto;
+    width: 100%;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    width: 300px; 
+    gap: 10px; 
+}
+
+label {
+    width: 200px; 
+    text-align: right; 
+    padding-right: 10px; 
+}
+
+input {
+    flex-grow: 1; 
+    width: auto; 
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; 
+}
+
+button {
+    background-color: navy;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+}
+
+button:hover {
+    background-color: #000080;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 128, 0.5);
+}
