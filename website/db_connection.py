@@ -48,7 +48,7 @@ class DatabaseConnection:
             self.conn.rollback()
             raise e
 
-    def execute_addition(self, participant_id, unparsed_file, mktracking_file, recording_file, p_survey_file, g_survey_file, session_id, game):
+    def execute_addition(self, participant_id, unparsed_file, mktracking_file, timestamp_data, recording_file, p_survey_file, g_survey_file, session_id, game):
         """
         Insert data into Sessions, Recordings, and Survey tables.
         """
@@ -58,10 +58,10 @@ class DatabaseConnection:
                 self.cursor.execute(
                     sql.SQL("""
                         INSERT INTO Sessions (participant_id, unparsed_data, mktracking_data, timestamp_data)
-                        VALUES (%s, %s, %s, NOW())
+                        VALUES (%s, %s, %s, %s)
                         RETURNING session_id;
                     """),
-                    (participant_id, unparsed_file, mktracking_file)
+                    (participant_id, unparsed_file, mktracking_file, timestamp_data)
                 )
                 session_id = self.cursor.fetchone()['session_id']
                 self.conn.commit()
@@ -76,13 +76,22 @@ class DatabaseConnection:
             )
 
             # Insert into Survey table
-            self.cursor.execute(
+            if p_survey_file == 'None':
+                self.cursor.execute(
                 sql.SQL("""
-                    INSERT INTO Survey (presence_survey, gameplay_survey, session_id)
+                    INSERT INTO Survey (gameplay_survey, session_id, participant_id)
                     VALUES (%s, %s, %s);
                 """),
-                (p_survey_file, g_survey_file, session_id)
+                (g_survey_file, session_id, participant_id)
             )
+            else:
+                self.cursor.execute(
+                    sql.SQL("""
+                        INSERT INTO Survey (presence_survey, gameplay_survey, session_id, participant_id)
+                        VALUES (%s, %s, %s, %s);
+                    """),
+                    (p_survey_file, g_survey_file, session_id, participant_id)
+                )
 
             self.conn.commit()
         except Exception as e:
