@@ -9,6 +9,9 @@ from flask import request, render_template, redirect, flash, url_for, session
 from flask.views import View
 import random
 import csv
+import os
+# from db_connection import DatabaseConnection
+from datetime import datetime
 
 #=======================
 #Parent class to Pens and IPQ classes
@@ -56,7 +59,28 @@ class Survey(View):
 
     def save_answers(self):
         # Open the CSV file in append mode
-        with open(self.file_name, mode="w", newline="") as file:
+        # with open(self.file_name, mode="w", newline="") as file:
+            # writer = csv.writer(file)
+
+            # headers = [f"q{i+1}" for i in range(len(self.answers))]
+            # writer.writerow(headers)
+
+            # # Write the survey response as a new row
+            # writer.writerow(self.answers)
+        base_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+        surveys_dir = os.path.join(base_dir, 'survey_files')
+        # NOTE: we need to add session_id
+        # surveys_dir = os.path.join(surveys_dir, f'surveys_{self.user_id}')
+
+        if not os.path.exists(surveys_dir):
+           os.makedirs(surveys_dir)
+
+        if not os.path.exists(surveys_dir):
+            os.makedirs(surveys_dir)  
+
+        file_path = os.path.join(surveys_dir, self.file_name)
+
+        with open(file_path, mode="w", newline="") as file:
             writer = csv.writer(file)
 
             headers = [f"q{i+1}" for i in range(len(self.answers))]
@@ -65,20 +89,20 @@ class Survey(View):
             # Write the survey response as a new row
             writer.writerow(self.answers)
 
-
     def dispatch_request(self):
         submit = False
         
         #if presence survey is submitted, get answers and save them to a csv
         if request.method == 'POST':
             submit = True
-            user_id = session.get('user_id')
+            self.user_id = session.get('user_id')
+            timestamp = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
             if self.survey_type == 'game':
                 #has the session id tied to the results
-                self.file_name = f'game_survey_results_{user_id}.csv'
+                self.file_name = f'game_survey_results_{self.user_id}_{timestamp}.csv'
                 self.get_game_answers()
             elif self.survey_type == 'presence':
-                self.file_name = f'pres_survey_results_{user_id}.csv'
+                self.file_name = f'pres_survey_results_{self.user_id}_{timestamp}.csv'
                 self.get_presence_answers()
             # Call save_answers to handle form submission and store the answers
             self.save_answers()

@@ -5,27 +5,55 @@
 <div class="container">
     <h1>Create Account</h1>
 
-    <div class="inputs">
-        <form action="/create" method="POST">
-            <div class="input-group">
-                <label for="new_username">Username:</label>
-                <input type="text" id="new_username" name="new_username" required><br>
-            </div>
-            <div class="input-group">
-                <label for="new_email">Email:</label>
-                <input type="email" id="new_email" name="new_email" required><br>
-            </div>
-            <div class="input-group">
-                <label for="new_password">Password:</label>
-                <input type="password" id="new_password" name="new_password" required><br>
-            </div>
-            <div class="input-group">
-                <label for="confirm_password">Confirm Password:</label>
-                <input type="password" id="confirm_password" name="confirm_password" required><br>
-            </div>
-            <button type="submit">Create Account</button>
-        </form>
-    </div>
+    <form action="/create" method="POST">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password" required><br>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br>
+
+        <label for="activity_level">Activity Level:</label>
+        <select id="activity_level" name="activity_level" required>
+            <option value="" disabled selected>Select your activity level</option>
+            <option value="1">1 - Bedridden</option>
+            <option value="2">2 - Sedentary</option>
+            <option value="3">3 - Lightly Active</option>
+            <option value="4">4 - Moderately Active</option>
+            <option value="5">5 - Active</option>
+            <option value="6">6 - Very Active</option>
+            <option value="7">7 - Highly Active</option>
+            <option value="8">8 - Extremely Active</option>
+            <option value="9">9 - Semi-Professional Athlete</option>
+            <option value="10">10 - Professional Athlete</option>
+        </select><br>
+
+        <label for="ethnicity">Ethnicity:</label>
+        <select id="ethnicity" name="ethnicity" required>
+            <option value="" disabled selected>Select your ethnicity</option>
+            <option value="1">Caucasian</option>
+            <option value="2">African American</option>
+            <option value="3">Hispanic</option>
+            <option value="4">Asian</option>
+            <option value="5">Native American</option>
+            <option value="6">Pacific Islander</option>
+            <option value="7">Other</option>
+        </select>
+        <input type="text" id="other_ethnicity" name="other_ethnicity" placeholder="Specify other ethnicity" style="display: none;"><br>
+
+        <label for="weight">Weight (pounds):</label>
+        <input type="number" id="weight" name="weight" required><br>
+
+        <label for="height">Height (inches):</label>
+        <input type="number" id="height" name="height" required><br>
+
+        <button type="submit">Create Account</button>
+    </form>
 
     <!-- Display the success or error message if it exists -->
     {% if create_user_message %}
@@ -37,5 +65,18 @@
     <hr>
 
     <p>Already have an account? <a href="/login">Go to Login</a></p>
-</div>
+
+    <script>
+        // Show the "Other" input field if "Other" is selected for ethnicity
+        document.getElementById('ethnicity').addEventListener('change', function() {
+            var otherEthnicityField = document.getElementById('other_ethnicity');
+            if (this.value === '7') { // "Other" has an ID of 7
+                otherEthnicityField.style.display = 'block';
+                otherEthnicityField.setAttribute('required', true);
+            } else {
+                otherEthnicityField.style.display = 'none';
+                otherEthnicityField.removeAttribute('required');
+            }
+        });
+    </script>
 {% endblock %}

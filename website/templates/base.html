@@ -26,7 +26,7 @@
                 <a href="{{ url_for('contributors') }}" class="{% if request.endpoint == 'contributors' %} active {% endif %}">Contributors</a>
                 <a href="{{ url_for('league') }}" class="{% if request.endpoint == 'league' %} active {% endif %}">Results</a>
         
-                {% if session.get('username') %}
+                {% if session.get('user_id') %}
                 <div class="dropdown">
                     <button class="dropbtn {% if request.endpoint == 'presence_survey' or request.endpoint == 'gameplay_survey' %} active {% endif %}">
                         Surveys <i class="fa fa-caret-down"></i>
@@ -45,7 +45,7 @@
             </div>
         
             <div class="navbar-right">
-                {% if session.get('username') %}
+                {% if session.get('user_id') %}
                     <a href="#" onclick="document.getElementById('logout-dialog').showModal(); return false;">Log out</a>
                 {% else %}
                     <a href="{{ url_for('login') }}" class="{% if request.endpoint == 'login' %} active {% endif %}">Login</a>
