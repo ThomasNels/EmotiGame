@@ -54,11 +54,13 @@ class admin(View):
                 elif file_key == 'recording_file':
                     recording_file = file_path
         
+        # TODO: add timestamp file to function, re-work function for exact files from admin (split apart), need way to get session_id if needed
         self.db_connection.execute_addition(participant_id=participant_id, unparsed_file=unparsed_file, mktracking_file=mktracking_file, timestamp_data=timestamp_file, 
                                             recording_file=recording_file, p_survey_file=presense_survey_file, g_survey_file=gameplay_survey_file,
                                             session_id=0, game='League of Legends')
    
     def dispatch_request(self):
+        # NOTE: update to new database for admin privledge
         if session.get('user_id') == 1:
             if request.method == "POST":
                 # dictionary used to get files
@@ -86,9 +88,9 @@ class admin(View):
             base_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
             surveys_dir = os.path.join(base_dir, 'survey_files')
 
-             if not os.path.exists(surveys_dir):
+            if not os.path.exists(surveys_dir):
                 os.makedirs(surveys_dir)
-            
+                
             surveys = [file for file in os.listdir(surveys_dir) if file.endswith('.csv')]
             return render_template('admin.html', users=users, sessions = sessions, surveys = surveys)
         else:

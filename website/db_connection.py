@@ -245,7 +245,8 @@ def create_tables():
     for activity in activity_levels:
         insert_activity_query = f'''
         INSERT INTO Activity (activity_type)
-        VALUES ('{activity}');
+        SELECT ('{activity}')
+        WHERE (SELECT COUNT(*) FROM Activity) < 11;
         '''
         connection.execute_query(insert_activity_query)
 
@@ -262,7 +263,8 @@ def create_tables():
     for ethnicity in ethnicities:
         insert_ethnicity_query = f'''
         INSERT INTO Ethnicity (ethnicity_type)
-        VALUES ('{ethnicity}');
+        SELECT ('{ethnicity}')
+        WHERE (SELECT COUNT(*) FROM Ethnicity) < 8;
         '''
         connection.execute_query(insert_ethnicity_query)
 

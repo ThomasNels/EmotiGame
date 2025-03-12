@@ -75,7 +75,7 @@ class sessionManager(View):
                 result = self.db_connection.fetch_one(insert_ethnicity_query, (other_ethnicity,))
                 if not result:
                     return render_template('create.html', create_user_message="Failed to create new ethnicity.", create_user_success=False)
-                ethnicity_id = result[0]
+                ethnicity_id = result['ethnicity_id']
 
             # Check if the email is already taken
             check_query = """
