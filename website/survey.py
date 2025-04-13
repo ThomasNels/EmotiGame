@@ -8,62 +8,113 @@
 from flask import request, render_template, redirect, flash, url_for, session
 from flask.views import View
 import random
-from db_connection import DatabaseConnection
+import csv
 import os
+# from db_connection import DatabaseConnection
+from datetime import datetime
 
 #=======================
 #Parent class to Pens and IPQ classes
 #=======================
 class Survey(View):
 
-    def __init__(self):
+    def __init__(self, survey_type):
+        self.survey_type = survey_type
         self.survey_questions = []
+        self.answers = []
+        self.file_name = ""
 
     def get_questions(self):
-        self.survey_questions.extend(Pens().pens_qs)
-        self.survey_questions.extend(IPQ().ipq_qs)
-
-    def shuffle_questions(self):
-        self.get_questions()
-        shuffled_questions = self.survey_questions
-        random.shuffle(shuffled_questions)
-        return shuffled_questions
-
-    def save_answers(self):
-
+        if self.survey_type == 'game':
+            self.survey_questions = Gameplay().game_qs
+        else:
+            self.survey_questions = Pens().pens_qs + IPQ().ipq_qs  # Combine lists properly
+            random.shuffle(self.survey_questions)
+    
+    def get_presence_answers(self):
         # Retrieve submitted answers
         submitted_answers = request.form
         survey_data = []
+
         # Collect answers for each question
         for key, value in submitted_answers.items():
             if key.startswith("answer_"):
                 question_id = int(key.split("_")[1])  # Extract question ID from the key
                 survey_data.append((question_id, int(value)))  # Store the answer as an integer
-                sorted_data = sorted(survey_data, key=lambda x: x[0])
-                answers = [tup[1] for tup in sorted_data]
+        sorted_data = sorted(survey_data, key=lambda x: x[0])
+        self.answers = [tup[1] for tup in sorted_data]
 
-        db_name = os.getenv('DB_NAME')
-        db_user = os.getenv('DB_USER')
-        db_password = os.getenv('DB_PASSWORD')
-        connection = DatabaseConnection(db_name, db_user, db_password)
-        insert_survey_query = '''
-        INSERT INTO Surveys (q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16, q17, q18, q19, q20, q21, q22, q23, q24, q25, q26, q27, q28, q29, q30, q31, q32, q33, q34, q35)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        '''
-        survey_answers = tuple(answers)
-        connection.execute_query(insert_survey_query, survey_answers)
-        connection.close()
+    def get_game_answers(self):
+        # Retrieve submitted answers
+        submitted_answers = request.form
+
+        # Collect answers for each question
+        for key, value in submitted_answers.items():
+            if key.startswith("answer_"):
+                try:
+                    self.answers.append(int(value))  # Store numeric answers as integers
+                except ValueError:
+                    self.answers.append(value)
+        
+
+    def save_answers(self):
+        # Open the CSV file in append mode
+        # with open(self.file_name, mode="w", newline="") as file:
+            # writer = csv.writer(file)
+
+            # headers = [f"q{i+1}" for i in range(len(self.answers))]
+            # writer.writerow(headers)
+
+            # # Write the survey response as a new row
+            # writer.writerow(self.answers)
+        base_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+        surveys_dir = os.path.join(base_dir, 'survey_files')
+        # NOTE: we need to add session_id
+        # surveys_dir = os.path.join(surveys_dir, f'surveys_{self.user_id}')
+
+        if not os.path.exists(surveys_dir):
+           os.makedirs(surveys_dir)
+
+        if not os.path.exists(surveys_dir):
+            os.makedirs(surveys_dir)  
+
+        file_path = os.path.join(surveys_dir, self.file_name)
+
+        with open(file_path, mode="w", newline="") as file:
+            writer = csv.writer(file)
+
+            headers = [f"q{i+1}" for i in range(len(self.answers))]
+            writer.writerow(headers)
+
+            # Write the survey response as a new row
+            writer.writerow(self.answers)
 
     def dispatch_request(self):
         submit = False
+        
+        #if presence survey is submitted, get answers and save them to a csv
         if request.method == 'POST':
             submit = True
+            self.user_id = session.get('user_id')
+            timestamp = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+            if self.survey_type == 'game':
+                #has the session id tied to the results
+                self.file_name = f'game_survey_results_{self.user_id}_{timestamp}.csv'
+                self.get_game_answers()
+            elif self.survey_type == 'presence':
+                self.file_name = f'pres_survey_results_{self.user_id}_{timestamp}.csv'
+                self.get_presence_answers()
             # Call save_answers to handle form submission and store the answers
             self.save_answers()
 
-        questions = self.shuffle_questions()
+        self.get_questions()
+        questions = self.survey_questions
+
         if session.get('user_id'):
-            return render_template('survey.html', questions=questions, submit=submit)
+            if self.survey_type == 'game':
+                return render_template(f'gameplay_survey.html', questions=questions, submit=submit)
+            if self.survey_type == 'presence':
+                return render_template(f'presence_survey.html', questions=questions, submit=submit)
         else:
             flash('Sorry, you need to be logged in to access that page.')
             return redirect(url_for('index'))
@@ -74,7 +125,7 @@ class Survey(View):
 class Pens(Survey):
 
     def __init__(self):
-        super().__init__()
+        super().__init__(survey_type='presence')
         self.pens_qs = []
         self.anchors = ["Do not agree", "Strongly agree"]
         self.pens_questions()
@@ -136,7 +187,7 @@ class Pens(Survey):
 class IPQ(Survey):
 
     def __init__(self):
-        super().__init__()
+        super().__init__(survey_type='presence')
         self.ipq_qs = []
         self.ipq_questions()
 
@@ -163,3 +214,17 @@ class IPQ(Survey):
             (35, "The virtual world seemed more realistic then the real world.", ["Fully disagree", "Fully agree"])
         ]
 
+class Gameplay(Survey):
+    def __init__(self):
+        super().__init__(survey_type='game')
+        self.game_qs = []
+        self.game_questions()
+
+    def game_questions(self):
+        self.game_qs = [
+            (1, "I had fun playing.", ["Do not agree", "Strongly agree"]),
+            (2, "I feel like the experience was challenging.", ["Do not agree", "Strongly agree"]),
+            (3, "My gameplay performance today is a good representation of my skill.", ["Do not agree", "Strongly agree"]),
+            (4, "The gameing computer worked properly.", ["Do not agree", "Strongly agree"]),
+            (5, "Was there anything you feel like you could ave done that might have changed the outcome of the game?", None),
+        ]

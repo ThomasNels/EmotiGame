@@ -1,23 +1,154 @@
+/* General Navbar Styling */
 .navbar {
-    margin: 4px;
-    padding: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 10px 20px;
     background-color: navy;
-    list-style-type: none;
-    overflow: hidden;
     position: sticky;
-}
-.navbar a {
-    color: silver;
-    padding: 7px;
-    font-size: large;
-    text-decoration: none;
-    /* border-right: 2px solid white; */
-}
-.navbar a:hover {
-    border: 2px solid white;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    margin: auto;
+    width: 70%;
+    border-radius: 10px;
 }
 
-.navbar a.active {
-    font: bold;
-    border: 2px solid silver;
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+}
+
+.navbar-right {
+    margin-left: auto; 
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.navbar a, .dropdown .dropbtn {
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    border-radius: 5px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: inherit; 
+    display: inline-block;
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+
+.navbar a:hover, .dropdown:hover .dropbtn, .dropdown-content a:hover {
+    background-color: silver;
+    color: black;
+    border-radius: 5px;
+}
+
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+
+.dropdown-content a {
+    color: navy;
+    padding: 12px 16px;
+    display: block;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Style for active navbar link */
+.navbar a.active, .dropdown .dropbtn.active {
+    background-color: silver;
+    color: black;
+    border-radius: 5px;
+}
+
+/*Header styling (containing the logo and title)*/
+.header_container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: auto;
+    width: 70%;
+    padding: 10px;
+}
+
+.header_container img {
+    max-width: 100px;
+    width: auto;
+}
+
+.header_container h1 {
+    display: inline-block;
+    font-size: 60px;
+    margin: 0;
+}
+
+
+/* diaglog box styling*/
+dialog {
+    border: none;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+dialog h2 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.dialog-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.navy-button {
+    background-color: navy;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.navy-button:hover {
+    background-color: #000080;
+}
+
+.navy-button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 128, 0.5);
 }

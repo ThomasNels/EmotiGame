@@ -1,52 +1,52 @@
 <!-- TODO: expand functionality -->
 <!-- TODO: improve presentation of page -->
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
-    <h1>
-        Forms
-    </h1>
-    <!-- TODO: get forms from database to display on page -->
-    <form method="POST">
-        <table class="documents">
-            <thead>
-                <th class="input">Select</th>
-                <th>Consent Form</th>
-                <th>Survey</th>
-                <th>User</th>
-            </thead>
-            <tbody>
-                <!-- TODO: database data (currently tempory data) (needs for loop)-->
-                <!-- TODO: add value=file.filename to input fields for deletion -->
-                <tr>
-                    <td class="input"><input type="checkbox" 
-                        name="files_to_delete"></td>
-                    <td>bob_jones.pdf</td>
-                    <td>bob_jones_survey.pdf</td>
-                    <td>Bob Jones</td>
-                </tr>
-                <tr>
-                    <td class="input"><input type="checkbox" 
-                        name="files_to_delete"></td>
-                    <td>john_doe.pdf</td>
-                    <td>john_doe_survey.pdf</td>
-                    <td>John Doe</td>
-                </tr>
-                <tr>
-                    <td class="input"><input type="checkbox" 
-                        name="files_to_delete"></td>
-                    <td>jane_doe.pdf</td>
-                    <td>jane_doe_survey.pdf</td>
-                    <td>Jane Doe</td>
-                </tr>
-            </tbody>
-        </table>
-        <!-- TODO: add button functionality with database -->
-        <!-- TODO: onclick:functionCall() -->
-        <button type="submit">Delete</button>
-    </form>
+    <h1>Upload CSV Files</h1>
+    <form method="POST", enctype="multipart/form-data">
+        <label for="user_id">Select User:</label>
+        <select id="user_id" name="user_id">
+            {% for user in users %}
+                <option value="{{ user }}">{{ user }}</option>
+            {% endfor %}
+        </select>
 
-    <form>
-        <button type="submit">Upload File</button>
+        <label for="session_id">Select Session:</label>
+        <select id="session_id" name="session_id">
+            <option value=0>0 (First Saved Session)</option>
+            {% for session in sessions %}
+                <option value="{{ session }}">{{ session }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="emotibit_file">EmotiBit File:</label>
+        <input type="file" id="emotibit_file" name="emotibit_file" required accept=".csv">
+        
+        <label for="tracking_file">Tracking File:</label>
+        <input type="file" id="tracking_file" name="tracking_file" required accept=".csv">
+        
+        <label for="timestamp_file">Timestamp File:</label>
+        <input type="file" id="timestamp_file" name="timestamp_file" required accept=".csv">
+
+        <label for="recording_file">Recording File:</label>
+        <input type="file" id="recording_file" name="recording_file" required accept=".mp4">
+
+        <label for="gameplay_survey">Select Gameplay Survey</label>
+        <select id="gameplay_survey" name="gameplay_survey">
+            {% for survey in surveys %}
+                <option value="{{ survey }}">{{ survey }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="presense_survey">Select Presense Survey</label>
+        <select id="presense_survey" name="presense_survey">
+            <option value="None">None</option>
+            {% for survey in surveys %}
+                <option value="{{ survey }}">{{ survey }}</option>
+            {% endfor %}
+        </select>
+        
+        <button type="submit">Upload</button>
     </form>
 {% endblock %}

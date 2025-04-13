@@ -1,0 +1,32 @@
+.container {
+    margin: auto;
+    width: 70%;
+    padding: 10px;
+}
+
+.container h1{
+    font-size: 40px;
+    text-align: center;
+}
+
+.container h2{
+    font-size: 30px;
+}
+
+.container img{
+    display: block;
+    justify-content: center;
+}
+
+.sub_title{
+    font-size: 14px;
+    text-align: center;
+}
+
+.flashes {
+    padding: 10px;
+    background-color: red;
+    color: rgb(236, 228, 228);
+    margin-bottom: 20px;
+    font-size: large;
+}

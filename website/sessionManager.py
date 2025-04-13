@@ -6,6 +6,7 @@ from flask.views import View
 from db_connection import DatabaseConnection
 import os
 from dotenv import load_dotenv
+import bcrypt
 
 load_dotenv()
 
@@ -19,7 +20,8 @@ class sessionManager(View):
         db_connection: db_connection class for a database connection
     """
     def __init__(self, action):
-        self.userName = None
+        super().__init__()
+        self.email = None
         self.password = None
         self.user_id = None
         self.action = action
@@ -31,46 +33,67 @@ class sessionManager(View):
     def auth(self):
         # Authenticates the user versus the database information
         query = """
-        SELECT user_id, password FROM User_Information WHERE username = %s;
+        SELECT participant_id, password FROM Participants WHERE email = %s;
         """
-
-        result = self.db_connection.fetch_one(query, (self.userName,))
+        result = self.db_connection.fetch_one(query, (self.email,))
         if result:
-            stored_password = result[1]
-            self.user_id = result[0]
-            return stored_password == self.password  # TODO: Add hashing logic if needed (e.g., bcrypt)
+            stored_password = result['password']
+            self.user_id = result['participant_id']
+            return bcrypt.checkpw(self.password.encode('utf-8'), stored_password.encode('utf-8'))
         return False
 
     def create(self):
         # Creates a new user for the webstie
         if request.method == 'POST':
-            # TODO: add name functionality
-            new_username = request.form.get("new_username")
-            new_email = request.form.get("new_email")
-            new_password = request.form.get("new_password")
+            email = request.form.get("email")
+            password = request.form.get("password")
             confirm_password = request.form.get("confirm_password")
+            age = request.form.get("age")
+            activity_level = request.form.get("activity_level")
+            ethnicity_id = request.form.get("ethnicity")
+            other_ethnicity = request.form.get("other_ethnicity")
+            weight = request.form.get("weight")
+            height = request.form.get("height")
 
-            if not new_username or not new_email or not new_password or not confirm_password:
+            # Validate required fields
+            if not email or not password or not confirm_password or not age or not activity_level or not ethnicity_id or not weight or not height:
                 return render_template('create.html', create_user_message="All fields are required", create_user_success=False)
 
-            if new_password != confirm_password:
+            # Check if passwords match
+            if password != confirm_password:
                 return render_template('create.html', create_user_message="Passwords do not match.", create_user_success=False)
 
+            # NOTE: probably not a long term solution. Will be replaced.
+            if ethnicity_id == "7":
+                if not other_ethnicity:
+                    return render_template('create.html', create_user_message="Please specify your ethnicity.", create_user_success=False)
+
+                # Insert the new ethnicity into the Ethnicity table
+                insert_ethnicity_query = """
+                INSERT INTO Ethnicity (ethnicity_type) VALUES (%s) RETURNING ethnicity_id;
+                """
+                result = self.db_connection.fetch_one(insert_ethnicity_query, (other_ethnicity,))
+                if not result:
+                    return render_template('create.html', create_user_message="Failed to create new ethnicity.", create_user_success=False)
+                ethnicity_id = result['ethnicity_id']
+
+            # Check if the email is already taken
             check_query = """
-            SELECT user_id FROM User_Information WHERE username = %s OR email = %s;
+            SELECT participant_id FROM Participants WHERE email = %s;
             """
-            existing_user = self.db_connection.fetch_one(check_query, (new_username, new_email))
-
+            existing_user = self.db_connection.fetch_one(check_query, (email,))
             if existing_user:
-                return render_template('create.html', create_user_message="Username or email already taken", create_user_success=False)
+                return render_template('create.html', create_user_message="Email already taken", create_user_success=False)
 
-            # TODO: add hashing logic to password input
+            # Hash the password
+            hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-            # inserts information into the database
+            # Insert the new user into the Participants table
             insert_query = """
-            INSERT INTO User_Information (username, email, password) VALUES (%s, %s, %s);
+            INSERT INTO Participants (email, password, participant_age, activity_id, ethnicity_id, participant_weight, participant_height)
+            VALUES (%s, %s, %s, %s, %s, %s, %s);
             """
-            self.db_connection.execute_query(insert_query, (new_username, new_email, new_password))
+            self.db_connection.execute_query(insert_query, (email, hashed_password.decode('utf-8'), age, activity_level, ethnicity_id, weight, height))
             self.db_connection.close()
 
             return render_template('create.html', create_user_message="User created successfully", create_user_success=True)
@@ -80,25 +103,22 @@ class sessionManager(View):
     def login(self):
         # Uses the auth function to ensure the user can login
         if self.auth():
-            session['username'] = self.userName
+            session['email'] = self.email
             session['user_id'] = self.user_id
             return redirect(url_for('index'))
         else:
-            return render_template('login.html', error_message="Incorrect Username and/or password")
+            return render_template('login.html', error_message="Incorrect Email and/or password")
 
-    #log out function
     def logout(self):
-        #TODO: Have check to ensure user wants to logout
-        session.pop('username', None)
+        session.pop('email', None)
         session.pop('user_id', None)
         return redirect(url_for('index'))
 
-    #dispatch request funtion to get the username and password
     def dispatch_request(self):
         try:
             if self.action == 'login':
                 if request.method == 'POST':
-                    self.userName = request.form.get('username')
+                    self.email = request.form.get('email')
                     self.password = request.form.get('password')
                     return self.login()
                 return render_template('login.html')
@@ -109,9 +129,7 @@ class sessionManager(View):
             if self.action == 'create':
                 return self.create()
 
-            # If no if condition is met, raise an exception
             raise ValueError("Invalid action specified")
 
         except Exception as e:
-            # Handle the exception and return an error response
             return f"An error occurred: {e}", 400
