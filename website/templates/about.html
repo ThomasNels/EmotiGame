@@ -1,5 +1,8 @@
 {% extends 'base.html' %} 
 {% block content %}
+    <head>
+        <title>About Us - EmotiGame</title>
+    </head>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
 
     <div class="container">
@@ -9,42 +12,104 @@
 
         <div class="sub_title">
             <p>
-                The Department of Computer Science and Engineering at the University of Nevada, Reno,<br>
+                The Department of Computer Science and Engineering at the University of Nevada, Reno<br>
                 CS 426 Senior Project<br>
                 Spring 2025
             </p>
         </div>
 
         <h2>
-            About:
+            Methodology:
         </h2>
 
         <p>
-            EmotiGame is a research study exploring how biometric data can reveal patterns in gaming skill levels. Our study brings together 12 participants—6 skilled and 6 unskilled—to compete in 1v1 League of Legends matches against an expert control player.
+            Our study investigates the potential relationship between biometric readings and skill level in competitive 
+            video gaming, specifically in League of Legends. The goal is to identify measurable patterns, such as heart 
+            rate, mouse movement, and keyboard usage, that may correlate with player skill during gameplay.
+        </p>
+
+        <h3>
+            Participants
+        </h3>
+
+        <p>
+            When recruiting participants for our study, we looked for people over the age of 18 with no restrictions 
+            on race, gender, or ethnicity. We recruited participants by putting up a flyer around campus and we were 
+            looking for participants with a wide range of skills and experience in League of Legends.
+        </p>
+        <p>
+            We wanted at least six unskilled and six skilled participants. We classified our unskilled players as people 
+            who were either unranked in the game or had a ranking of Silver or lower, also known as the bottom 52 percentile 
+            of players. Our skilled participants were classified as having a rank Emerald or higher, with the highest rank 
+            being Master. Participants in these ranks were among the top 28 percentile of players.
+        </p>
+        <p>
+            Each of our participants had to play against our control player, who had a ranking of master, and is told they 
+            will receive $10 if they win. This control was recruited directly from the University of Nevada, Reno's E-Sports club.
+        </p>
+
+        <h3>
+            Procedure
+        </h3>
+
+        <p>
+            For each session, our control player and participants are placed in separate rooms. After reading the consent form, an 
+            EmotiBit heart rate sensor is placed on their upper arm. They are then told they can change the settings of the game 
+            however they would like. The EmotiBit begins recording while they do this to establish a baseline heart rate.
+        </p> 
+
+        <p>
+            After 5-10 minutes, a 1v1 League of Legends match begins between the two and is considered over when one player dies, 
+            when 50 enemy minions are killed, or when the enemy tower is destroyed. Once the match is over, the participant is asked 
+            to complete two post-game surveys. One asks questions about the previous game play experience and the other is a random 
+            combination of the Player Experience of Needs Satisfaction (PENS) [9] and the Igroup Presence Questionnaire (IPQ) [10] 
+            surveys. Our control player took the gameplay survey after every session and PENS and IPQ survey once after all the study 
+            trials were complete. These surveys were hosted on our website that was created using Flask, Python, and PostgreSQL.
         </p>
 
         <p>
-            As participants play, we track heart rate, keyboard activity, and mouse movement to analyze physiological and behavioral differences between skill levels. Using machine learning, we aim to uncover biometric indicators that may distinguish experienced players from beginners.
+            Once the surveys have been completed, the EmotiBit is taken off and the participant receives $10 regardless of sucess. In 
+            addition, the control player receives $10 for every match played. Both are asked to keep it secret to preserve the integrity 
+            of the other trials.
         </p>
 
+        <h3>
+            Data Collection and Analysis
+        </h3>
+
         <p>
-            This website serves as a hub for participants to log in, complete surveys about their gameplay experience, and stay updated on our findings. Stay tuned as we dive into the science of gaming performance!
+            During each trial we record the heart rate of the control player and the participant. The recording starts 5-10 minutes before 
+            each match and ends after the surveys have been filled out. Additionally, mouse and keyboard tracking software collects data 
+            on the mouse and keyboard movements of both players during the match. All data is anonymized and stored securely with access 
+            restricted to the core research team and principal investigator. Visit our results page for more infomation on the analysis.
         </p>
 
         <h2>
-            Resources:
+            References:
         </h2>
 
         <p>
-            <a href="https://github.com/EmotiBit/EmotiBit_Docs">- https://github.com/EmotiBit/EmotiBit_Docs</a><br>
-            <a href="https://www.unr.edu/research-integrity/human-research/human-research-protection-policy-manual">- https://www.unr.edu/research-integrity/human-research/human-research-protection-policy-manual</a><br>
-            <a href="https://about.citiprogram.org/series/responsible-conduct-of-research-rcr/?gad_source=1&gclid=CjwKCAiA74G9BhAEEiwA8kNfpSLschxpomVLgH37jbSiwZ_R1jFiXeVgvpTmAxXIkbRwAzAoJXb7RBoCJDYQAvD_BwE">- https://about.citiprogram.org/series/responsible-conduct-of-research-rcr</a><br>
-            <a href="https://books.google.com/books?id=2iVyZNLnVxMC">- https://books.google.com/books?id=2iVyZNLnVxMC</a><br>
-            <a href="https://www.sciencedirect.com/science/article/pii/S2451958824002008">- https://www.sciencedirect.com/science/article/pii/S2451958824002008</a><br>
-            <a href="https://bjsm.bmj.com/content/16/2/96.abstract">- https://bjsm.bmj.com/content/16/2/96.abstract</a><br>
-            <a href="http://miro.enev.us/docs/mouse_ID.pdf">- http://miro.enev.us/docs/mouse_ID.pdf</a><br>
-            <a href="https://github.com/gireeshkbogu/LAAD">- https://github.com/gireeshkbogu/LAAD</a><br>
-            <a href="https://dspace.mit.edu/handle/1721.1/155895">- https://dspace.mit.edu/handle/1721.1/155895</a><br>
+            [1]&nbsp;&nbsp;&nbsp;&nbsp;EmotiBit, “GitHub - EmotiBit/EmotiBit_Docs: Documentation and tutorials for the EmotiBit,” GitHub, 2019. https://github.com/EmotiBit/EmotiBit_Docs (accessed Apr. 17, 2025).
+            <br><br>
+            [2]&nbsp;&nbsp;&nbsp;&nbsp;“Human Research Protection Policy Manual | Research Integrity,” University of Nevada, Reno, 2022. https://www.unr.edu/research-integrity/human-research/human-research-protection-policy-manual
+            <br><br>
+            [3]&nbsp;&nbsp;&nbsp;&nbsp;“Responsible Conduct of Research (RCR) | CITI Program,” CITI Program, 2021. https://about.citiprogram.org/series/responsible-conduct-of-research-rcr/?gad_source=1&gclid=CjwKCAiA74G9BhAEEiwA8kNfpSLschxpomVLgH37jbSiwZ_R1jFiXeVgvpTmAxXIkbRwAzAoJXb7RBoCJDYQAvD_BwE (accessed Apr. 17, 2025).
+            <br><br>
+            [4]&nbsp;&nbsp;&nbsp;&nbsp;J. N. Vickers, Perception, cognition, and decision training : the quiet eye in action. Champaign, Il: Human Kinetics, 2007.
+            <br><br>
+            [5]&nbsp;&nbsp;&nbsp;&nbsp;S. C. Cregan, A. J. Toth, and M. J. Campbell, “Comparing the play of sport and action-adventure game genres on heart rate and heart rate variability,” Computers in Human Behavior Reports, vol. 17, no. 100567, p. 100567, Dec. 2024, doi: https://doi.org/10.1016/j.chbr.2024.100567.
+            <br><br>
+            [6]&nbsp;&nbsp;&nbsp;&nbsp;D. Docherty, “A comparison of heart rate responses in racquet games.,” British Journal of Sports Medicine, vol. 16, no. 2, pp. 96–100, Jun. 1982, doi: https://doi.org/10.1136/bjsm.16.2.96.
+            <br><br>
+            [7]&nbsp;&nbsp;&nbsp;&nbsp;M. M. Abdelrahman, “Detecting Human Memory Processes via Bio-Signals,” 2024. doi: https://hdl.handle.net/1721.1/155895.
+            <br><br>
+            [8]&nbsp;&nbsp;&nbsp;&nbsp;R. Kaminsky, M. Enev, and E. Andersen, “Identifying Game Players with Mouse Biometrics,” Dec. 2008. [Online]. Available: http://miro.enev.us/docs/mouse_ID.pdf 
+            <br><br>
+            [9]&nbsp;&nbsp;&nbsp;&nbsp;R. M. Ryan, C. S. Rigby, and A. Przybylski, “The Motivational Pull of Video Games: A Self-Determination Theory Approach,” Motivation and Emotion, vol. 30, no. 4, 2006, doi: https://doi.org/10.1007/s11031-006-9051-8.
+            <br><br>
+            [10]&nbsp;&nbsp;&nbsp;&nbsp;T. Schubert, F. Friedmann, and H. Regenbrecht, “The Experience of Presence: Factor Analytic Insights,” Presence: Teleoperators and Virtual Environments, vol. 10, no. 3, pp. 266–281, Jun. 2001, doi: https://doi.org/10.1162/105474601300343603.
+
+
         </p>
     </div>
 
