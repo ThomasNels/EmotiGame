@@ -4,9 +4,26 @@
     <div class="container">
         <h1>Page for data on League of Legends</h1>
 
-        <!-- NOTE: This is temporary to show example plots from current data -->
-        <h2>Sample Data:</h2>
-        <img src="static/images/HR_sample.jpg" alt="Sample Heart Rate Data">
-        <img src="static/images/EDA_sample.jpg" alt="Sample EDA Data">
+        <p>
+            To help analyze biometric differences in skill level, we employed various machine learning models 
+            to classify participants based on heart rate and movement during specific gameplay events. We trained Long Short-term Memory (LSTM), 
+            Random Forest, and Suppert Vector Machine (SVM) classifiers on features that included participant heart rate, base heart rate, 
+            actions per minute, and key event labels. By comparing model performance, we identified a correlation between 
+            biometric indicators and player skill level. The LSTM model was particularly useful for capturing temporal 
+            patterns in the features, offering insight into how players respond to different in-game situations. Overall, 
+            the results suggest that biometric data can serve as an indicator of skill level in video game players and 
+            provide a foundation for future research in this area.
+        </p>
+
+        <img src="static/images/APM_comp_session_8.png" alt="Figure 1: Actions per minute (APM) between the control player and participant for session 8.">
+        <p class="image-caption">Figure 1: Actions per minute (APM) between the control player and participant for session 8.</p>
+        <img src="static/images/mean_APM_group.png" alt="Figure 2: Mean actions per minute (APM) by group.">
+        <p class="image-caption">Figure 2: Mean actions per minute (APM) by group.</p>
+        <img src="static/images/mean_HR_group_event.png" alt="Figure 3: Mean heart rate (HR) during event by group.">
+        <p class="image-caption">Figure 3: Mean heart rate (HR) during event by group.</p>
+        <img src="static/images/ML_accuracy_table.png" alt="Table 1: Accuracy of the machine learning models used.">
+        <p class="image-caption">Table 1: Accuracy of the machine learning models used.</p>
+        <img src="static/images/p_value_table.png" alt="Table 2: Statistical significance between skill level and biometric readings for different types of events.">
+        <p class="image-caption">Table 2: Statistical significance between skill level and biometric readings for different types of events.</p>
     </div>
 {% endblock %}

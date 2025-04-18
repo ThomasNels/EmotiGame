@@ -18,6 +18,12 @@
     justify-content: center;
 }
 
+.image-caption {
+    text-align: center;
+    font-style: italic;
+}
+
+
 .sub_title{
     font-size: 14px;
     text-align: center;
@@ -29,4 +35,9 @@
     color: rgb(236, 228, 228);
     margin-bottom: 20px;
     font-size: large;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
