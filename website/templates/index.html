@@ -1,5 +1,8 @@
 {% extends 'base.html' %} 
 {% block content %}
+<head>
+    <title>Home Page</title>
+</head>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -36,9 +39,9 @@
             stay updated on our findings. Stay tuned as we dive into the science of gaming performance!
         </p>
 
-        <h3>
+        <h2>
             Want to learn more?
-        </h3>
+        </h2>
         <p>
             Go to our about page or click here:<br>
             <a href="{{ url_for('about') }}"
@@ -47,9 +50,9 @@
             </a>
         </p>
 
-        <h3>
+        <h2>
             Are you a participant?
-        </h3>    
+        </h2>    
         <p>
             Log in here:<br>
             <a href="{{ url_for('login') }}"
