@@ -45,20 +45,23 @@
             Go to our about page or click here:<br>
             <a href="{{ url_for('about') }}"
                         class="{% if request.endpoint == 'about' %} active {% endif %}">
-                        about page
+                        About Page
             </a>
         </p>
 
-        <h2>
-            Are you a participant?
-        </h2>    
-        <p>
-            Log in here:<br>
-            <a href="{{ url_for('login') }}"
-                        class="{% if request.endpoint == 'login' %} active {% endif %}">
-                        Login/Create Account
-            </a>
-        </p>
+
+        {% if not session.get('user_id') %}
+            <h2>
+                Are you a participant?
+            </h2>    
+            <p>
+                Log in here:<br>
+                <a href="{{ url_for('login') }}"
+                            class="{% if request.endpoint == 'login' %} active {% endif %}">
+                            Login/Create Account
+                </a>
+            </p>
+        {% endif %}
     </div>
 
 {% endblock %}
