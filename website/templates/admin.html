@@ -1,5 +1,3 @@
-<!-- TODO: expand functionality -->
-<!-- TODO: improve presentation of page -->
 {% extends 'base.html' %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
@@ -29,9 +27,6 @@
             
             <label for="timestamp_file">Timestamp File:</label>
             <input type="file" id="timestamp_file" name="timestamp_file" required accept=".csv">
-
-            <label for="recording_file">Recording File:</label>
-            <input type="file" id="recording_file" name="recording_file" required accept=".mkv">
 
             <label for="gameplay_survey">Select Gameplay Survey</label>
             <select id="gameplay_survey" name="gameplay_survey">
