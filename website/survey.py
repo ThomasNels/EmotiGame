@@ -225,6 +225,6 @@ class Gameplay(Survey):
             (1, "I had fun playing.", ["Do not agree", "Strongly agree"]),
             (2, "I feel like the experience was challenging.", ["Do not agree", "Strongly agree"]),
             (3, "My gameplay performance today is a good representation of my skill.", ["Do not agree", "Strongly agree"]),
-            (4, "The gameing computer worked properly.", ["Do not agree", "Strongly agree"]),
-            (5, "Was there anything you feel like you could ave done that might have changed the outcome of the game?", None),
+            (4, "The gaming computer worked properly.", ["Do not agree", "Strongly agree"]),
+            (5, "Was there anything you feel like you could have done that might have changed the outcome of the game?", None),
         ]
