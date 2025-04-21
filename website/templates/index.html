@@ -1,9 +1,7 @@
 {% extends 'base.html' %} 
 {% block content %}
-<head>
-    <title>Home Page</title>
-</head>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <div class="flashes">
@@ -13,12 +11,13 @@
             </div>
         {% endif %}
     {% endwith %}
-    <!-- TODO: improve presentation of page -->
     
     <div class="container">
         <h1>
             Welcome to the EmotiGame Study <br>
         </h1>
+        
+        <img src="static/images/home_page.png" alt="Home page image">
 
         <p>
             One challenge in understanding skill in competitive gaming is what factors contribute to players skill 

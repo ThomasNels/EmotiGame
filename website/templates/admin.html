@@ -3,50 +3,52 @@
 {% extends 'base.html' %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
-    <h1>Upload CSV Files</h1>
-    <form method="POST", enctype="multipart/form-data">
-        <label for="user_id">Select User:</label>
-        <select id="user_id" name="user_id">
-            {% for user in users %}
-                <option value="{{ user }}">{{ user }}</option>
-            {% endfor %}
-        </select>
+    <div class="container">
+        <h1>Upload CSV Files</h1>
+        <form method="POST", enctype="multipart/form-data">
+            <label for="user_id">Select User:</label>
+            <select id="user_id" name="user_id">
+                {% for user in users %}
+                    <option value="{{ user }}">{{ user }}</option>
+                {% endfor %}
+            </select>
 
-        <label for="session_id">Select Session:</label>
-        <select id="session_id" name="session_id">
-            <option value=0>0 (First Saved Session)</option>
-            {% for session in sessions %}
-                <option value="{{ session }}">{{ session }}</option>
-            {% endfor %}
-        </select>
-        
-        <label for="emotibit_file">EmotiBit File:</label>
-        <input type="file" id="emotibit_file" name="emotibit_file" required accept=".csv">
-        
-        <label for="tracking_file">Tracking File:</label>
-        <input type="file" id="tracking_file" name="tracking_file" required accept=".csv">
-        
-        <label for="timestamp_file">Timestamp File:</label>
-        <input type="file" id="timestamp_file" name="timestamp_file" required accept=".csv">
+            <label for="session_id">Select Session:</label>
+            <select id="session_id" name="session_id">
+                <option value=0>0 (First Saved Session)</option>
+                {% for session in sessions %}
+                    <option value="{{ session }}">{{ session }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="emotibit_file">EmotiBit File:</label>
+            <input type="file" id="emotibit_file" name="emotibit_file" required accept=".csv">
+            
+            <label for="tracking_file">Tracking File:</label>
+            <input type="file" id="tracking_file" name="tracking_file" required accept=".csv">
+            
+            <label for="timestamp_file">Timestamp File:</label>
+            <input type="file" id="timestamp_file" name="timestamp_file" required accept=".csv">
 
-        <label for="recording_file">Recording File:</label>
-        <input type="file" id="recording_file" name="recording_file" required accept=".mkv">
+            <label for="recording_file">Recording File:</label>
+            <input type="file" id="recording_file" name="recording_file" required accept=".mkv">
 
-        <label for="gameplay_survey">Select Gameplay Survey</label>
-        <select id="gameplay_survey" name="gameplay_survey">
-            {% for survey in surveys %}
-                <option value="{{ survey }}">{{ survey }}</option>
-            {% endfor %}
-        </select>
+            <label for="gameplay_survey">Select Gameplay Survey</label>
+            <select id="gameplay_survey" name="gameplay_survey">
+                {% for survey in surveys %}
+                    <option value="{{ survey }}">{{ survey }}</option>
+                {% endfor %}
+            </select>
 
-        <label for="presense_survey">Select Presense Survey</label>
-        <select id="presense_survey" name="presense_survey">
-            <option value="None">None</option>
-            {% for survey in surveys %}
-                <option value="{{ survey }}">{{ survey }}</option>
-            {% endfor %}
-        </select>
-        
-        <button type="submit">Upload</button>
-    </form>
+            <label for="presense_survey">Select Presense Survey</label>
+            <select id="presense_survey" name="presense_survey">
+                <option value="None">None</option>
+                {% for survey in surveys %}
+                    <option value="{{ survey }}">{{ survey }}</option>
+                {% endfor %}
+            </select>
+            
+            <button type="submit">Upload</button>
+        </form>
+    </div>
 {% endblock %}
