@@ -25,7 +25,7 @@
                 <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %} active {% endif %}">Home</a>
                 <a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %} active {% endif %}">About</a>
                 <a href="{{ url_for('contributors') }}" class="{% if request.endpoint == 'contributors' %} active {% endif %}">Contributors</a>
-                <a href="{{ url_for('league') }}" class="{% if request.endpoint == 'league' %} active {% endif %}">Results</a>
+                <a href="{{ url_for('results') }}" class="{% if request.endpoint == 'results' %} active {% endif %}">Results</a>
         
                 {% if session.get('user_id') %}
                 <div class="dropdown">

@@ -193,14 +193,14 @@ class IPQ(Survey):
             (25, "I did not feel present in the virtual space.", ["Did not feel", "Felt present"]),
             (26, "I had a sense of acting in the virtual space, rather then operating something from outside", ["Fully disagree", "Fully agree"]),
             (27, "I felt present in the virtual space.", ["Fully disagree", "Fully agree"]),
-            (28, "How aware were you of the real world surrounding while navigating in the virtual world? (i.e. sounds, room temperature, other people, etc.)?", ["Extremely aware", "Moderately aware", "Not aware at all"]),
+            (28, "How aware were you of the real world surroundings while navigating in the virtual world? (i.e. sounds, room temperature, other people, etc.)?", ["Extremely aware", "Moderately aware", "Not aware at all"]),
             (29, "I was not aware of my real environment.", ["Fully disagree", "Fully agree"]),
             (30, "I still paid attention to the real environment.", ["Fully disagree", "Fully agree"]),
             (31, "I was completely captivated by the virtual world.", ["Fully disagree", "Fully agree"]),
             (32, "How real did the virtual world seem to you?", ["Completely real", "Not real at all"]),
             (33, "How much did your experience in the virtual environment seem consistent with your real world experience?", ["Not consistent", "Moderately consistent", "Very consistent"]),
             (34, "How real did the virtual world seem to you.", ["About as real as an imagined world", "Indistinguishable from the real world"]),
-            (35, "The virtual world seemed more realistic then the real world.", ["Fully disagree", "Fully agree"])
+            (35, "The virtual world seemed more realistic than the real world.", ["Fully disagree", "Fully agree"])
         ]
 
 class Gameplay(Survey):

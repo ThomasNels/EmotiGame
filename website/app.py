@@ -24,9 +24,9 @@ app.add_url_rule('/gameplay_survey', view_func=Survey.as_view('gameplay_survey',
 def index():
     return render_template('index.html')
 
-@app.route('/league_of_legends')
-def league():
-    return render_template('league.html')
+@app.route('/results')
+def results():
+    return render_template('results.html')
 
 @app.route('/contributors')
 def contributors():
