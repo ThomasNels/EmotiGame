@@ -48,7 +48,7 @@ class DatabaseConnection:
             self.conn.rollback()
             raise e
 
-    def execute_addition(self, participant_id, unparsed_file, mktracking_file, timestamp_data, recording_file, p_survey_file, g_survey_file, session_id, game):
+    def execute_addition(self, participant_id, unparsed_file, mktracking_file, timestamp_data, p_survey_file, g_survey_file, session_id, game):
         """
         Insert data into Sessions, Recordings, and Survey tables.
         """
@@ -65,15 +65,6 @@ class DatabaseConnection:
                 )
                 session_id = self.cursor.fetchone()['session_id']
                 self.conn.commit()
-
-            # Insert into Recordings table
-            self.cursor.execute(
-                sql.SQL("""
-                    INSERT INTO Recordings (game, session_id, recording, recording_date)
-                    VALUES (%s, %s, %s, NOW());
-                """),
-                (game, session_id, recording_file)
-            )
 
             # Insert into Survey table
             if p_survey_file == 'None':

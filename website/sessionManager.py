@@ -63,7 +63,6 @@ class sessionManager(View):
             if password != confirm_password:
                 return render_template('create.html', create_user_message="Passwords do not match.", create_user_success=False)
 
-            # NOTE: probably not a long term solution. Will be replaced.
             if ethnicity_id == "7":
                 if not other_ethnicity:
                     return render_template('create.html', create_user_message="Please specify your ethnicity.", create_user_success=False)

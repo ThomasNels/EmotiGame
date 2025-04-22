@@ -1,6 +1,7 @@
 {% extends 'base.html' %} 
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <div class="flashes">
@@ -10,38 +11,57 @@
             </div>
         {% endif %}
     {% endwith %}
-    <!-- TODO: improve presentation of page -->
     
     <div class="container">
         <h1>
             Welcome to the EmotiGame Study <br>
         </h1>
+        
+        <img src="static/images/home_page.png" alt="Home page image">
 
         <p>
-            We are on a mission to uncover biometric indicators of gaming skill. By analyzing heart rate, keyboard activity, and mouse movment, we aim to understand what sets skilled players apart. Why does this matter? We want to help improve skill development and future game design for better player experience. Feel free to explore our website and learn more about our research!
+            One challenge in understanding skill in competitive gaming is what factors contribute to players skill 
+            level. Is it possible to identify patterns in player behavior that reveal skill and cognitive load? EmotiGame 
+            is a user research study exploring how biometric data can reveal patterns in gaming skill levels. Our user 
+            study brings together 12 participants, 6 skilled and 6 unskilled, to compete in 1v1 League of Legends matches 
+            against an expert control player.
         </p>
 
-        <h3>
+        <p>
+            As participants play, we track heart rate, keyboard activity, and mouse movement to analyze physiological and 
+            behavioral differences between skill levels. Using machine learning, we aim to uncover biometric indicators that 
+            may distinguish experienced players from beginners.
+        </p>
+
+        <p>
+            This website serves as a hub for participants to log in, complete surveys about their gameplay experience, and 
+            stay updated on our findings. Stay tuned as we dive into the science of gaming performance!
+        </p>
+
+        <h2>
             Want to learn more?
-        </h3>
+        </h2>
         <p>
             Go to our about page or click here:<br>
             <a href="{{ url_for('about') }}"
                         class="{% if request.endpoint == 'about' %} active {% endif %}">
-                        about page
+                        About Page
             </a>
         </p>
 
-        <h3>
-            Are you a participant?
-        </h3>    
-        <p>
-            Log in here:<br>
-            <a href="{{ url_for('login') }}"
-                        class="{% if request.endpoint == 'login' %} active {% endif %}">
-                        Login/Create Account
-            </a>
-        </p>
+
+        {% if not session.get('user_id') %}
+            <h2>
+                Are you a participant?
+            </h2>    
+            <p>
+                Log in here:<br>
+                <a href="{{ url_for('login') }}"
+                            class="{% if request.endpoint == 'login' %} active {% endif %}">
+                            Login/Create Account
+                </a>
+            </p>
+        {% endif %}
     </div>
 
 {% endblock %}

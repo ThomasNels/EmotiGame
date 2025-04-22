@@ -37,5 +37,4 @@ def about():
     return render_template('about.html')
 
 if __name__ == "__main__":
-    # change debug to false to hide error from displaying on website, set to true for testing purposes
     app.run(debug=True)

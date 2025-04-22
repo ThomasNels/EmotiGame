@@ -51,16 +51,12 @@ class admin(View):
                     mktracking_file = file_path
                 elif file_key == 'timestamp_file':
                     timestamp_file = file_path
-                elif file_key == 'recording_file':
-                    recording_file = file_path
         
-        # TODO: add timestamp file to function, re-work function for exact files from admin (split apart), need way to get session_id if needed
         self.db_connection.execute_addition(participant_id=participant_id, unparsed_file=unparsed_file, mktracking_file=mktracking_file, timestamp_data=timestamp_file, 
-                                            recording_file=recording_file, p_survey_file=presense_survey_file, g_survey_file=gameplay_survey_file,
+                                            p_survey_file=presense_survey_file, g_survey_file=gameplay_survey_file,
                                             session_id=0, game='League of Legends')
    
     def dispatch_request(self):
-        # NOTE: update to new database for admin privledge
         if session.get('user_id') == 1:
             if request.method == "POST":
                 # dictionary used to get files
@@ -72,7 +68,6 @@ class admin(View):
                     'emotibit_file': request.files.get('emotibit_file'),
                     'tracking_file': request.files.get('tracking_file'),
                     'timestamp_file': request.files.get('timestamp_file'),
-                    'recording_file': request.files.get('recording_file')
                 }
 
                 gameplay_survey_file = request.form.get('gameplay_survey')
