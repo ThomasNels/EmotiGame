@@ -35,11 +35,8 @@ class admin(View):
         data_dir = os.path.join(base_dir, 'session_data')
         participant_dir = os.path.join(data_dir, f'participant_{participant_id}_{session_id}')
 
-        if not os.path.exists(data_dir):
-           os.makedirs(data_dir)
-
-        if not os.path.exists(participant_dir):
-            os.makedirs(participant_dir)  
+        os.makedirs(data_dir, exist_ok=True)
+        os.makedirs(participant_dir, exist_ok=True) 
         
         for file_key, file in files.items():
             if file:
