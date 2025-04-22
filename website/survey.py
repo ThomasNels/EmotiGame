@@ -10,7 +10,6 @@ from flask.views import View
 import random
 import csv
 import os
-# from db_connection import DatabaseConnection
 from datetime import datetime
 
 #=======================
@@ -59,18 +58,8 @@ class Survey(View):
 
     def save_answers(self):
         # Open the CSV file in append mode
-        # with open(self.file_name, mode="w", newline="") as file:
-            # writer = csv.writer(file)
-
-            # headers = [f"q{i+1}" for i in range(len(self.answers))]
-            # writer.writerow(headers)
-
-            # # Write the survey response as a new row
-            # writer.writerow(self.answers)
         base_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
         surveys_dir = os.path.join(base_dir, 'survey_files')
-        # NOTE: we need to add session_id
-        # surveys_dir = os.path.join(surveys_dir, f'surveys_{self.user_id}')
 
         if not os.path.exists(surveys_dir):
            os.makedirs(surveys_dir)
@@ -225,6 +214,6 @@ class Gameplay(Survey):
             (1, "I had fun playing.", ["Do not agree", "Strongly agree"]),
             (2, "I feel like the experience was challenging.", ["Do not agree", "Strongly agree"]),
             (3, "My gameplay performance today is a good representation of my skill.", ["Do not agree", "Strongly agree"]),
-            (4, "The gameing computer worked properly.", ["Do not agree", "Strongly agree"]),
-            (5, "Was there anything you feel like you could ave done that might have changed the outcome of the game?", None),
+            (4, "The gaming computer worked properly.", ["Do not agree", "Strongly agree"]),
+            (5, "Was there anything you feel like you could have done that might have changed the outcome of the game?", None),
         ]

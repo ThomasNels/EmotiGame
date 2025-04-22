@@ -1,44 +1,100 @@
 {% extends 'base.html' %} 
 {% block content %}
-<head>
-    <title>Contributors</title>
-</head>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+
     
-    <div class="container">
-        <h1>
-            Meet the people who made this happen!
-        </h1>
+    <div class="padding">
+        <div class="container">
+            <h1>
+                Meet the people who made this happen!
+            </h1>
 
-        <h2>
-            Team 34:
-        </h2>
+            <h2>
+                Team 34:
+            </h2>
 
-        <p>
-            Morgan Jensen<br>
-            Carson Ramocinski<br>
-            Thomas Nelson
-        </p>
+            <div class="card-container">
+                <div class="card">
+                    <img src="static/images/Morgan_Jensen.jpg" alt="Morgan Jensen">
+                    <div class="card-body">
+                        <h4><b>Morgan Jensen</b></h4>
+                    </div>
+                </div>
 
-        <h2>
-            Our Advisors:
-        </h2>
+                <div class="card">
+                    <img src="static/images/Carson_Ramocinski.png" alt="Carson Ramocinski">
+                    <div class="card-body">
+                        <h4><b>Carson Ramocinski</b></h4>
+                    </div>
+                </div>
 
-        <p>
-            Michael Wilson - UNR CSE<br>
-            Sean Mongomery - Connected Future Labs
-        </p>
+                <div class="card">
+                    <img src="static/images/Thomas_Nelson.png" alt="Thomas Nelson">
+                    <div class="card-body">
+                        <h4><b>Thomas Nelson</b></h4>
+                    </div>
+                </div>
+            </div>
 
-        <h2>
-            Our Instructors (UNR CSE):
-        </h2>
+            <h2>
+                Our Advisors:
+            </h2>
 
-        <p>
-            David Feil-Seifer<br>
-            Sara Davis<br>
-            Vinh Le<br>
-            Levi Scully
-        </p>
+
+            <div class="card-container">
+                <div class="card">
+                    <img src="static/images/blank_profile.png" alt="Michael Wilson - UNR CSE">
+                    <div class="card-body">
+                        <h4><b>Michael Wilson</b></h4>
+                        <p>UNR CSE</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="static/images/blank_profile.png" alt="Sean Mongomery - Connected Future Labs">
+                    <div class="card-body">
+                        <h4><b>Sean Mongomery</b></h4>
+                        <p>Connected Future Labs</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2>
+                Our Instructors (UNR CSE):
+            </h2>
+
+            <div class="card-container">
+                <div class="card">
+                    <img src="static/images/blank_profile.png" alt="David Feil-Seifer">
+                    <div class="card-body">
+                        <h4><b>David Feil-Seifer</b></h4>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="static/images/blank_profile.png" alt="Vinh Le">
+                    <div class="card-body">
+                        <h4><b>Vinh Le</b></h4>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="static/images/blank_profile.png" alt="Sara Davis">
+                    <div class="card-body">
+                        <h4><b>Sara Davis</b></h4>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="static/images/blank_profile.png" alt="Levi Scully">
+                    <div class="card-body">
+                        <h4><b>Levi Scully</b></h4>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
     </div>
 
 {% endblock %}
