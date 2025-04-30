@@ -100,3 +100,56 @@ body {
 .card-body {
     padding: 12px;
 }
+
+.image-caption {
+    text-align: center;
+    font-style: italic;
+    margin-top: 10px;
+    position: relative;
+}
+
+.info-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.info-circle {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    line-height: 18px;
+    font-size: 12px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 6px;
+    width: max-content;        
+    max-width: 600px;          
+    white-space: normal;       
+    word-wrap: break-word;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    text-align: left;
+}
+
+.info-circle:hover + .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
