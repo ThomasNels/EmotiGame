@@ -17,13 +17,52 @@
 
         <img src="static/images/APM_comp_session_8.png" alt="Figure 1: Actions per minute (APM) between the control player and participant for session 8.">
         <p class="image-caption">Figure 1: Actions per minute (APM) between the control player and participant for session 8.</p>
+        
+        <p>This graph, figure 1, shows a side-by-side comparison of the APM of a participant versus the control player surring session 8. 
+            The AMP is based on the erratic mouse movements, mouse clicks and keyboard clicks each person makes over 10 second intervals. 
+            Additionally, the low and high importance events are labeled and during these events, the AMP of both people spikes.</p>
+
         <img src="static/images/mean_APM_group.png" alt="Figure 2: Mean actions per minute (APM) by group.">
-        <p class="image-caption">Figure 2: Mean actions per minute (APM) by group.</p>
+        <p class="image-caption">
+            Figure 2: Mean actions per minute (APM) by group.
+            <span class="info-wrapper">
+                <span class="info-circle">i</span>
+                <span class="tooltip">In this image, the data for skilled players ends roughly 10 seconds before the control and unskilled 
+                    player's data. This is because sessions with skilled players were shorter in length then unskilled players.</span>
+            </span>
+        </p>
+
+        <p>Figure 2 compares the mean actions per minute (AMP) among three groups: control, unskilled, and skilled. The skilled participants 
+            have high AMP and the unskilled have the lowest. This contrast between the two can indicate that there is a performance gap tied 
+            to their expertise.</p>
+        
         <img src="static/images/mean_HR_group_event.png" alt="Figure 3: Mean heart rate (HR) during event by group.">
-        <p class="image-caption">Figure 3: Mean heart rate (HR) during event by group.</p>
+        <p class="image-caption">Figure 3: Mean heart rate (HR) during an event by group.</p>
+
+        <p>This graph, figure 3, compares mean heart rate across control, skilled, and unskilled groups during important events. The skilled 
+            participants have the highest heart rate, then the control player. The lower heart rate of the unskilled participants could reflect 
+            less investment in the game.</p>
+        
         <img src="static/images/ML_accuracy_table.png" alt="Table 1: Accuracy of the machine learning models used.">
         <p class="image-caption">Table 1: Accuracy of the machine learning models used.</p>
+
+        <p>Table 1 shows the performance of the machine learning models we used. Accuracy is the overall correctness of the model. 
+            Precision is the proportion of correct classifications. Higher precision means fewer false positives. Recall is the ability 
+            to correctly identify all instances of a given skill level. The higher the recall is, the fewer detections were missed. 
+            F1 - Score is the harmonic mean of precision and recall and provides a balanced metric when both are implemented. As 
+            seen in the table above, All of our models performed very well. They had a very good accuracy and provided a lot of insight 
+            into our results.</p>
+        
         <img src="static/images/p_value_table.png" alt="Table 2: Statistical significance between skill level and biometric readings for different types of events.">
         <p class="image-caption">Table 2: Statistical significance between skill level and biometric readings for different types of events.</p>
+
+        <p>Table 2 shows the statistical significance for the relationship between skill level and biometric responses, like heart rate 
+            or AMP, across in-game events of varying importance. A low p-value, typically less than 0.05, indicates that the observed 
+            differences are statistically significant.</p>
+
+        <p>After reading the values within table 2, we see that there is some statistical significance between AMP with high importance 
+            events, as well as statistical significance between heart rate with low and high importance events. While we don't fully 
+            understand how yet, table 2 shows that there is a correlation of skill level with AMP and heart rate.</p>
+
     </div>
 {% endblock %}
