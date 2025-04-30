@@ -25,7 +25,7 @@ body {
     margin-bottom: 20px;
 }
 
-form {
+.upload form {
     background: white;
     max-width: 500px;
     margin: 20px auto;
@@ -34,14 +34,17 @@ form {
     box-shadow: 0px 0px 10px black;
 }
 
-label {
+.upload label {
     font-weight: bold;
     display: block;
     margin-top: 10px;
     color: black;
 }
 
-select, input[type="file"], textarea, button {
+.upload select,
+.upload input[type="file"],
+.upload textarea,
+.upload button {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
@@ -49,7 +52,7 @@ select, input[type="file"], textarea, button {
     border-radius: 4px;
 }
 
-button {
+.upload button {
     background-color: navy;
     color: white;
     font-size: 16px;
@@ -60,6 +63,6 @@ button {
     border-radius: 4px;
 }
 
-button:hover {
+.upload button:hover {
     background-color: blue;
 }
